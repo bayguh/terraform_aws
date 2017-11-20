@@ -3,10 +3,10 @@ variable "aws_route_table_variables" {
     description = "Route Table変数"
 
     default = {
-      name              = ""
-      vpc_id            = ""
-      cidr_block        = ""
-      availability_zone = ""
+      name       = ""
+      vpc_id     = ""
+      cidr_block = ""
+      gateway_id = ""
     }
 }
 

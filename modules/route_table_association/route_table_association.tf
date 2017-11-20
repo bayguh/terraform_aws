@@ -3,8 +3,8 @@ variable "aws_route_table_association_variables" {
     description = "Route Table Association変数"
 
     default = {
-      subnet_id = ""
-      vpc_id    = ""
+      subnet_id      = ""
+      route_table_id = ""
     }
 }
 
@@ -13,6 +13,6 @@ variable "aws_route_table_association_variables" {
  * https://www.terraform.io/docs/providers/aws/r/route_table_association.html
  */
 resource "aws_route_table_association" "route_table_association" {
-  subnet_id = "${var.aws_route_table_association_variables["subnet_id"]}"
-  vpc_id    = "${var.aws_route_table_association_variables["vpc_id"]}"
+  subnet_id      = "${var.aws_route_table_association_variables["subnet_id"]}"
+  route_table_id = "${var.aws_route_table_association_variables["route_table_id"]}"
 }

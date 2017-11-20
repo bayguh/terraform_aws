@@ -1,9 +1,9 @@
 variable "env" {}
 
-variable "vpc_settings" {}
-variable "subnet_prd_settings" {}
-variable "internet_gateway_settings" {}
-variable "route_table_settings" {}
+variable "vpc_settings" { type = "map" }
+variable "subnet_prd_settings" { type = "map" }
+variable "internet_gateway_settings" { type = "map" }
+variable "route_table_settings" { type = "map" }
 
 /**
  * モジュール読み込み
@@ -64,7 +64,7 @@ module "route_table_association" {
   source = "../../modules/route_table_association"
 
   aws_route_table_association_variables {
-    subnet_id = "${module.subnet_prd.subnet_id}"
-    vpc_id    = "${module.vpc.vpc_id}"
+    subnet_id      = "${module.subnet_prd.subnet_id}"
+    route_table_id = "${module.route_table.route_table_id}"
   }
 }

@@ -3,7 +3,6 @@ env="prd"
 
 # VPC
 vpc_settings {
-  name                 = "bayguh_vpc"
   cidr_block           = "10.0.0.0/16"
   instance_tenancy     = "default"
   enable_dns_support   = true
@@ -11,11 +10,11 @@ vpc_settings {
 }
 
 # Subnet
-subnet_prd_settings {
-  name              = "bayguh-prd-subnet"
-  cidr_block        = "10.0.0.0/16"
-  availability_zone = "ap-northeast-1a"
-}
+subnet_availability_zones = ["ap-northeast-1a", "ap-northeast-1b", "ap-northeast-1c"]
+# Subnet web
+subnet_web_cidr_blocks = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24"]
+# Subnet db
+subnet_db_cidr_blocks = ["10.0.3.0/24", "10.0.4.0/24", "10.0.5.0/24"]
 
 # Internet Gateway
 internet_gateway_settings {

@@ -7,14 +7,14 @@ env="prd"
 
 # 通常バケット設定
 bucket_default_settings {
-  bucket = "bayguh-default-bucket"
+  bucket = "default-bucket"
   region = "ap-northeast-1"
   acl    = "private"
 }
 
 // バックアップ用バケット設定
 bucket_backup_settings {
-  bucket = "bayguh-backup-bucket"
+  bucket = "backup-bucket"
   region = "ap-northeast-1"
   acl    = "private"
   days   = 30

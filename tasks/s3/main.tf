@@ -15,7 +15,7 @@ module "bucket_default" {
   source = "../../modules/s3_bucket"
 
   aws_s3_bucket_variables {
-    bucket = "${var.bucket_default_settings["bucket"]}"
+    bucket = "${var.project_name}-${var.bucket_default_settings["bucket"]}"
     region = "${var.bucket_default_settings["region"]}"
     acl    = "${var.bucket_default_settings["acl"]}"
     env    = "${var.env}"
@@ -27,7 +27,7 @@ module "bucket_backup" {
   source = "../../modules/s3_bucket_lifecycle_days"
 
   aws_s3_bucket_variables {
-    bucket = "${var.bucket_backup_settings["bucket"]}"
+    bucket = "${var.project_name}-${var.bucket_backup_settings["bucket"]}"
     region = "${var.bucket_backup_settings["region"]}"
     acl    = "${var.bucket_backup_settings["acl"]}"
     days   = "${var.bucket_backup_settings["days"]}"

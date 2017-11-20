@@ -5,9 +5,17 @@ variable "aws_subnet_variables" {
     default = {
       name              = ""
       vpc_id            = ""
-      cidr_block        = ""
-      availability_zone = ""
     }
+}
+
+variable "cidr_blocks" {
+  type = "list"
+  default = []
+}
+
+variable "availability_zones" {
+  type = "list"
+  default = []
 }
 
 /**
@@ -15,16 +23,17 @@ variable "aws_subnet_variables" {
  * https://www.terraform.io/docs/providers/aws/r/subnet.html
  */
 resource "aws_subnet" "subnet" {
+  count                   = "${length(var.cidr_blocks)}"
   vpc_id                  = "${var.aws_subnet_variables["vpc_id"]}"
-  cidr_block              = "${var.aws_subnet_variables["cidr_block"]}"
-  availability_zone       = "${var.aws_subnet_variables["availability_zone"]}"
+  cidr_block              = "${element(var.cidr_blocks, count.index)}"
+  availability_zone       = "${element(var.availability_zones, count.index%length(var.availability_zones))}"
   map_public_ip_on_launch = true
 
   tags {
-    Name = "${var.aws_subnet_variables["name"]}"
+    Name = "${format(var.aws_subnet_variables["name"], count.index+1)}"
   }
 }
 
-output "subnet_id" {
-    value = "${aws_subnet.subnet.id}"
+output "subnet_ids" {
+  value = "${join(",", aws_subnet.subnet.*.id)}"
 }

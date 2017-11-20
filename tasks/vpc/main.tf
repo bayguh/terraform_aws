@@ -5,7 +5,6 @@ variable "subnet_availability_zones" { type = "list" }
 variable "subnet_web_cidr_blocks" { type = "list" }
 variable "subnet_db_cidr_blocks" { type = "list" }
 
-variable "internet_gateway_settings" { type = "map" }
 variable "route_table_settings" { type = "map" }
 
 /**
@@ -59,7 +58,7 @@ module "internet_gateway" {
   source = "../../modules/internet_gateway"
 
   aws_internet_gateway_variables {
-    name   = "${var.internet_gateway_settings["name"]}"
+    name   = "${var.project_name}-internet-gateway"
     vpc_id = "${module.vpc_prd.vpc_id}"
   }
 }
@@ -69,7 +68,7 @@ module "route_table" {
   source = "../../modules/route_table"
 
   aws_route_table_variables {
-    name       = "${var.route_table_settings["name"]}"
+    name       = "${var.project_name}-internet-route-table"
     vpc_id     = "${module.vpc_prd.vpc_id}"
     cidr_block = "${var.route_table_settings["cidr_block"]}"
     gateway_id = "${module.internet_gateway.internet_gateway_id}"

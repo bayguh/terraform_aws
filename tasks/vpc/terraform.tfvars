@@ -16,13 +16,7 @@ subnet_web_cidr_blocks = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24"]
 # Subnet db
 subnet_db_cidr_blocks = ["10.0.3.0/24", "10.0.4.0/24", "10.0.5.0/24"]
 
-# Internet Gateway
-internet_gateway_settings {
-  name = "bayguh-internet-gateway"
-}
-
 # Route Table
 route_table_settings {
-  name       = "public-access-route-table"
   cidr_block = "0.0.0.0/0"
 }

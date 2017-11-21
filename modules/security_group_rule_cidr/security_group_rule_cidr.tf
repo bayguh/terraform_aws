@@ -7,9 +7,13 @@ variable "aws_security_group_rule_variables" {
       from_port                = ""
       to_port                  = ""
       protocol                 = ""
-      source_security_group_id = ""
       security_group_id        = ""
     }
+}
+
+variable "cidr_blocks" {
+  type = "list"
+  default = []
 }
 
 /**
@@ -21,7 +25,7 @@ resource "aws_security_group_rule" "security_group_rule" {
   from_port                = "${var.aws_security_group_rule_variables["from_port"]}"
   to_port                  = "${var.aws_security_group_rule_variables["to_port"]}"
   protocol                 = "${var.aws_security_group_rule_variables["protocol"]}"
-  source_security_group_id = "${var.aws_security_group_rule_variables["source_security_group_id"]}"
+  cidr_blocks              = "${var.cidr_blocks}"
   security_group_id        = "${var.aws_security_group_rule_variables["security_group_id"]}"
 }
 

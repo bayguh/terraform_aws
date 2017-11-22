@@ -10,11 +10,13 @@ vpc_settings {
 }
 
 # Subnet
-subnet_availability_zones = ["ap-northeast-1a", "ap-northeast-1b", "ap-northeast-1c"]
+subnet_availability_zones = ["ap-northeast-1a", "ap-northeast-1c"]
 # Subnet web
-subnet_web_cidr_blocks = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24"]
+subnet_web_cidr_blocks = ["10.0.0.0/24", "10.0.1.0/24"]
 # Subnet db
-subnet_db_cidr_blocks = ["10.0.3.0/24", "10.0.4.0/24", "10.0.5.0/24"]
+subnet_db_cidr_blocks = ["10.0.2.0/24", "10.0.3.0/24"]
+# Subnet shd
+subnet_shd_cidr_blocks = ["10.0.255.0/24"]
 
 # Route Table
 route_table_settings {

@@ -3,8 +3,9 @@ variable "aws_subnet_variables" {
     description = "subnet変数"
 
     default = {
-      name              = ""
-      vpc_id            = ""
+      name   = ""
+      vpc_id = ""
+      type   = ""
     }
 }
 
@@ -31,6 +32,7 @@ resource "aws_subnet" "subnet" {
 
   tags {
     Name = "${format(var.aws_subnet_variables["name"], count.index+1)}"
+    Type = "${var.aws_subnet_variables["type"]}"
   }
 }
 

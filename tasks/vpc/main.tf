@@ -4,6 +4,7 @@ variable "vpc_settings" { type = "map" }
 variable "subnet_availability_zones" { type = "list" }
 variable "subnet_web_cidr_blocks" { type = "list" }
 variable "subnet_db_cidr_blocks" { type = "list" }
+variable "subnet_shd_cidr_blocks" { type = "list" }
 
 variable "route_table_settings" { type = "map" }
 
@@ -34,6 +35,7 @@ module "subnet_web" {
   aws_subnet_variables {
     name   = "${var.project_name}-subnet-web%02d"
     vpc_id = "${module.vpc_prd.vpc_id}"
+    type   = "web"
   }
 
   cidr_blocks        = "${var.subnet_web_cidr_blocks}"
@@ -45,11 +47,26 @@ module "subnet_db" {
   source = "../../modules/subnet"
 
   aws_subnet_variables {
-    name              = "${var.project_name}-subnet-db%02d"
-    vpc_id            = "${module.vpc_prd.vpc_id}"
+    name   = "${var.project_name}-subnet-db%02d"
+    vpc_id = "${module.vpc_prd.vpc_id}"
+    type   = "db"
   }
 
   cidr_blocks        = "${var.subnet_db_cidr_blocks}"
+  availability_zones = "${var.subnet_availability_zones}"
+}
+
+# Subnet shd
+module "subnet_shd" {
+  source = "../../modules/subnet"
+
+  aws_subnet_variables {
+    name   = "${var.project_name}-subnet-shd%02d"
+    vpc_id = "${module.vpc_prd.vpc_id}"
+    type   = "shd"
+  }
+
+  cidr_blocks        = "${var.subnet_shd_cidr_blocks}"
   availability_zones = "${var.subnet_availability_zones}"
 }
 
@@ -80,9 +97,9 @@ module "route_table_association" {
   source = "../../modules/route_table_association"
 
   aws_route_table_association_variables {
-    count = "${length(var.subnet_web_cidr_blocks)}"
+    count = "${length(concat(var.subnet_web_cidr_blocks, var.subnet_db_cidr_blocks, var.subnet_shd_cidr_blocks))}"
     route_table_id = "${module.route_table.route_table_id}"
   }
 
-  subnet_ids = ["${(split(",", module.subnet_web.subnet_ids))}"]
+  subnet_ids = ["${concat(split(",", module.subnet_web.subnet_ids), split(",", module.subnet_db.subnet_ids), split(",", module.subnet_shd.subnet_ids))}"]
 }

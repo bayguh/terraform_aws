@@ -138,17 +138,6 @@ module "instance_web" {
   subnet_ids             = "${data.aws_subnet_ids.web.ids}"
 }
 
-module "eip_web" {
-  source = "../../modules/eip"
-
-  aws_eip_variables {
-    count  = "${var.instance_web_settings["count"]}"
-    vpc    = true
-  }
-
-  instances = ["${(split(",", module.instance_web.instance_ids))}"]
-}
-
 # db
 module "instance_db" {
   source = "../../modules/instance_add_ebs"
@@ -171,17 +160,6 @@ module "instance_db" {
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.db.id}"]
   subnet_ids             = "${data.aws_subnet_ids.db.ids}"
-}
-
-module "eip_db" {
-  source = "../../modules/eip"
-
-  aws_eip_variables {
-    count  = "${var.instance_db_settings["count"]}"
-    vpc    = true
-  }
-
-  instances = ["${(split(",", module.instance_db.instance_ids))}"]
 }
 
 # ladder
@@ -229,15 +207,4 @@ module "instance_consul" {
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.consul.id}"]
   subnet_ids             = "${data.aws_subnet_ids.shd.ids}"
-}
-
-module "eip_consul" {
-  source = "../../modules/eip"
-
-  aws_eip_variables {
-    count  = "${var.instance_consul_settings["count"]}"
-    vpc    = true
-  }
-
-  instances = ["${(split(",", module.instance_consul.instance_ids))}"]
 }

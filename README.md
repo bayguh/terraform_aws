@@ -55,6 +55,10 @@ terraform version: 0.11.0
 │   │   └── instance_add_ebs.tf
 │   ├── internet_gateway
 │   │   └── internet_gateway.tf
+│   ├── route53_record
+│   │   └── route53_record.tf
+│   ├── route53_zone
+│   │   └── route53_zone.tf
 │   ├── route_table
 │   │   └── route_table.tf
 │   ├── route_table_association
@@ -81,6 +85,10 @@ terraform version: 0.11.0
 │       └── disk_partition.sh
 ├── tasks
 │   ├── instance
+│   │   ├── backend.tf
+│   │   ├── main.tf
+│   │   └── terraform.tfvars
+│   ├── route53
 │   │   ├── backend.tf
 │   │   ├── main.tf
 │   │   └── terraform.tfvars

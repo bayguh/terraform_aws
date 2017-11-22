@@ -7,6 +7,7 @@ variable "subnet_db_cidr_blocks" { type = "list" }
 variable "subnet_shd_cidr_blocks" { type = "list" }
 
 variable "route_table_settings" { type = "map" }
+variable "endpoint_s3_settings" { type = "map" }
 
 /**
  * モジュール読み込み
@@ -85,7 +86,7 @@ module "route_table" {
   source = "../../modules/route_table"
 
   aws_route_table_variables {
-    name       = "${var.project_name}-internet-route-table"
+    name       = "${var.project_name}-public-route-table"
     vpc_id     = "${module.vpc_prd.vpc_id}"
     cidr_block = "${var.route_table_settings["cidr_block"]}"
     gateway_id = "${module.internet_gateway.internet_gateway_id}"
@@ -102,4 +103,16 @@ module "route_table_association" {
   }
 
   subnet_ids = ["${concat(split(",", module.subnet_web.subnet_ids), split(",", module.subnet_db.subnet_ids), split(",", module.subnet_shd.subnet_ids))}"]
+}
+
+# endpoint s3
+module "endpoint_s3" {
+  source = "../../modules/endpoint"
+
+  aws_vpc_endpoint_variables {
+    service_name = "${var.endpoint_s3_settings["service_name"]}"
+    vpc_id       = "${module.vpc_prd.vpc_id}"
+  }
+
+  route_table_ids = ["${module.route_table.route_table_id}"]
 }

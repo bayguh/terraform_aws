@@ -22,3 +22,8 @@ subnet_shd_cidr_blocks = ["10.0.255.0/24"]
 route_table_settings {
   cidr_block = "0.0.0.0/0"
 }
+
+# endpoint s3
+endpoint_s3_settings {
+  service_name = "com.amazonaws.ap-northeast-1.s3"
+}

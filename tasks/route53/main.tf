@@ -1,9 +1,8 @@
 variable "dns_suffix" {}
 variable "ttl" {}
 
-variable "records_web_dev" {}
-variable "records_web_stg" {}
-variable "records_web_prd" {}
+variable "records_dev_web_setting" { type = "map" }
+variable "records_stg_web_setting" { type = "map" }
 
 /**
  * モジュール読み込み
@@ -26,13 +25,13 @@ module "route53_record_dev_web" {
   source = "../../modules/route53_record"
 
   aws_route53_record_variables {
-    name    = "dev-web.${var.dns_suffix}"
+    name    = "${var.records_dev_web_setting["env"] == "prd" ? "web.${var.dns_suffix}" : "${var.records_dev_web_setting["env"]}-web.${var.dns_suffix}"}"
     zone_id = "${module.route53_zone.zone_id}"
-    type    = "A"
+    type    = "${var.records_dev_web_setting["type"]}"
     ttl     = "${var.ttl}"
   }
 
-  records = ["${var.records_web_dev}"]
+  records = ["${var.records_dev_web_setting["record"]}"]
 }
 
 # web用 route53 record stg
@@ -40,25 +39,11 @@ module "route53_record_stg_web" {
   source = "../../modules/route53_record"
 
   aws_route53_record_variables {
-    name    =  "stg-web.${var.dns_suffix}"
+    name    = "${var.records_dev_web_setting["env"] == "prd" ? "web.${var.dns_suffix}" : "${var.records_stg_web_setting["env"]}-web.${var.dns_suffix}"}"
     zone_id = "${module.route53_zone.zone_id}"
-    type    = "A"
+    type    = "${var.records_stg_web_setting["type"]}"
     ttl     = "${var.ttl}"
   }
 
-  records = ["${var.records_web_stg}"]
-}
-
-# web用 route53 record prd
-module "route53_record_prd_web" {
-  source = "../../modules/route53_record"
-
-  aws_route53_record_variables {
-    name    = "prd-web.${var.dns_suffix}"
-    zone_id = "${module.route53_zone.zone_id}"
-    type    = "A"
-    ttl     = "${var.ttl}"
-  }
-
-  records = ["${var.records_web_prd}"]
+  records = ["${var.records_stg_web_setting["record"]}"]
 }

@@ -15,24 +15,17 @@ data "aws_vpc" "selected" {
   }
 }
 
-data "aws_subnet_ids" "web" {
+data "aws_subnet_ids" "public" {
   vpc_id = "${data.aws_vpc.selected.id}"
   tags {
-    Type = "web"
+    Type = "public"
   }
 }
 
-data "aws_subnet_ids" "db" {
+data "aws_subnet_ids" "private" {
   vpc_id = "${data.aws_vpc.selected.id}"
   tags {
-    Type = "db"
-  }
-}
-
-data "aws_subnet_ids" "shd" {
-  vpc_id = "${data.aws_vpc.selected.id}"
-  tags {
-    Type = "shd"
+    Type = "private"
   }
 }
 
@@ -106,7 +99,7 @@ module "instance_ansible" {
   }
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.ansible.id}"]
-  subnet_ids             = "${data.aws_subnet_ids.shd.ids}"
+  subnet_ids             = "${data.aws_subnet_ids.public.ids}"
 }
 
 module "eip_ansible" {
@@ -135,7 +128,7 @@ module "instance_web" {
   }
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.web.id}"]
-  subnet_ids             = "${data.aws_subnet_ids.web.ids}"
+  subnet_ids             = "${data.aws_subnet_ids.private.ids}"
 }
 
 # db
@@ -159,7 +152,7 @@ module "instance_db" {
   }
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.db.id}"]
-  subnet_ids             = "${data.aws_subnet_ids.db.ids}"
+  subnet_ids             = "${data.aws_subnet_ids.private.ids}"
 }
 
 # ladder
@@ -177,7 +170,7 @@ module "instance_ladder" {
   }
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.ladder.id}"]
-  subnet_ids             = "${data.aws_subnet_ids.shd.ids}"
+  subnet_ids             = "${data.aws_subnet_ids.public.ids}"
 }
 
 module "eip_ladder" {
@@ -206,5 +199,5 @@ module "instance_consul" {
   }
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.consul.id}"]
-  subnet_ids             = "${data.aws_subnet_ids.shd.ids}"
+  subnet_ids             = "${data.aws_subnet_ids.private.ids}"
 }

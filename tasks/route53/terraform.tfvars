@@ -1,10 +1,17 @@
 // DNSサフィックス
-dns_suffix="bayguh.jp."
+dns_suffix = "bayguh.jp."
 
 // デフォルトttl
-ttl="300"
+ttl = "300"
 
-# dns設定IP
-records_web_dev="xxx.xxx.xxx.xxx"
-records_web_stg="xxx.xxx.xxx.xxx"
-records_web_prd="xxx.xxx.xxx.xxx"
+# dnsレコード設定
+records_dev_web_setting {
+  env    = "dev"
+  type   = "A"
+  record = "111.111.111.111"
+}
+records_stg_web_setting {
+  env    = "stg"
+  type   = "A"
+  record = "222.222.222.222"
+}

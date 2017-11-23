@@ -29,7 +29,7 @@ instance_db_settings {
   ebs_device_name          = "/dev/sdb"
   ebs_volume_type          = "gp2"
   ebs_volume_size          = 100
-  private_key              = "../../keys/ssh/access_key"
+  private_key              = "../../keys/ssh/access-key.pem"
   disk_partition_file_path = "../../scripts/disk_partition/disk_partition.sh"
   mount_path               = "/var/lib/mysql5.7"
 }

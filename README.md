@@ -32,6 +32,12 @@ terraform version: 0.11.0
 ./terraform_execute.sh destroy s3
 ```
 
+## ネットワーク構成
+下記を参考に本番と開発を分け(パターン4)、開発はVPCで分ける(パターン2-1)<br />
+
+https://dev.classmethod.jp/cloud/aws/account-and-vpc-dividing-pattern/
+
+
 ## その他
 ・ terraformサーバの作成は「scripts/aws_setup/terraform_setup.sh」で行います。
 

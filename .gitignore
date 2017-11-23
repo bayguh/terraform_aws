@@ -11,4 +11,5 @@ private.key
 .DS_Store
 access.key
 secret.key
-terraform-user.pem
+*.key
+*.pem

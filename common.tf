@@ -6,8 +6,6 @@ variable "secret_key" {}
 # common.tfvarsで変数指定--------------------
 variable "default_region" {}
 variable "project_name" {}
-
-variable "terraform_ip" { type = "list" }
 # -----------------------------------------
 
 /**

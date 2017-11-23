@@ -3,29 +3,50 @@ variable "env" {}
 variable "instance_ansible_settings" { type = "map" }
 variable "instance_web_settings" { type = "map" }
 variable "instance_db_settings" { type = "map" }
-variable "instance_ladder_settings" { type = "map" }
+variable "instance_bastion_settings" { type = "map" }
 variable "instance_consul_settings" { type = "map" }
 
 # vpc subnet読み込み -------------------------------------
 
-data "aws_vpc" "selected" {
+data "aws_vpc" "vpc" {
   filter {
     name = "tag:Name"
-    values = ["${var.project_name}-vpc"]
+    values = ["${var.env == "prd" ? "${var.project_name}-vpc" : "${var.project_name}-${var.env}-vpc"}"]
   }
 }
 
 data "aws_subnet_ids" "public" {
-  vpc_id = "${data.aws_vpc.selected.id}"
+  vpc_id = "${data.aws_vpc.vpc.id}"
   tags {
     Type = "public"
   }
 }
 
-data "aws_subnet_ids" "private" {
-  vpc_id = "${data.aws_vpc.selected.id}"
+data "aws_subnet_ids" "private-common" {
+  vpc_id = "${data.aws_vpc.vpc.id}"
   tags {
-    Type = "private"
+    Type = "private-common"
+  }
+}
+
+data "aws_subnet_ids" "web" {
+  vpc_id = "${data.aws_vpc.vpc.id}"
+  tags {
+    Type = "web"
+  }
+}
+
+data "aws_subnet_ids" "db" {
+  vpc_id = "${data.aws_vpc.vpc.id}"
+  tags {
+    Type = "db"
+  }
+}
+
+data "aws_subnet_ids" "cache" {
+  vpc_id = "${data.aws_vpc.vpc.id}"
+  tags {
+    Type = "cache"
   }
 }
 
@@ -36,42 +57,42 @@ data "aws_subnet_ids" "private" {
 data "aws_security_group" "common" {
   filter {
     name = "tag:Name"
-    values = ["${var.project_name}-security-group-common"]
+    values = ["${var.env == "prd" ? "${var.project_name}-security-group-common" : "${var.project_name}-${var.env}-security-group-common"}"]
   }
 }
 
 data "aws_security_group" "ansible" {
   filter {
     name = "tag:Name"
-    values = ["${var.project_name}-security-group-ansible"]
+    values = ["${var.env == "prd" ? "${var.project_name}-security-group-ansible" : "${var.project_name}-${var.env}-security-group-ansible"}"]
   }
 }
 
 data "aws_security_group" "web" {
   filter {
     name = "tag:Name"
-    values = ["${var.project_name}-security-group-web"]
+    values = ["${var.env == "prd" ? "${var.project_name}-security-group-web" : "${var.project_name}-${var.env}-security-group-web"}"]
   }
 }
 
 data "aws_security_group" "db" {
   filter {
     name = "tag:Name"
-    values = ["${var.project_name}-security-group-db"]
+    values = ["${var.env == "prd" ? "${var.project_name}-security-group-db" : "${var.project_name}-${var.env}-security-group-db"}"]
   }
 }
 
-data "aws_security_group" "ladder" {
+data "aws_security_group" "bastion" {
   filter {
     name = "tag:Name"
-    values = ["${var.project_name}-security-group-ladder"]
+    values = ["${var.env == "prd" ? "${var.project_name}-security-group-bastion" : "${var.project_name}-${var.env}-security-group-bastion"}"]
   }
 }
 
 data "aws_security_group" "consul" {
   filter {
     name = "tag:Name"
-    values = ["${var.project_name}-security-group-consul"]
+    values = ["${var.env == "prd" ? "${var.project_name}-security-group-consul" : "${var.project_name}-${var.env}-security-group-consul"}"]
   }
 }
 
@@ -128,7 +149,7 @@ module "instance_web" {
   }
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.web.id}"]
-  subnet_ids             = "${data.aws_subnet_ids.private.ids}"
+  subnet_ids             = "${data.aws_subnet_ids.web.ids}"
 }
 
 # db
@@ -152,36 +173,36 @@ module "instance_db" {
   }
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.db.id}"]
-  subnet_ids             = "${data.aws_subnet_ids.private.ids}"
+  subnet_ids             = "${data.aws_subnet_ids.db.ids}"
 }
 
-# ladder
-module "instance_ladder" {
+# bastion
+module "instance_bastion" {
   source = "../../modules/instance"
 
   aws_instance_variables {
-    count         = "${var.instance_ladder_settings["count"]}"
-    name          = "${var.env == "prd" ? "ladder%04d" : "${var.env}-ladder%04d"}"
-    ami           = "${var.instance_ladder_settings["ami"]}"
-    instance_type = "${var.instance_ladder_settings["instance_type"]}"
-    key_name      = "${var.instance_ladder_settings["key_name"]}"
-    volume_type   = "${var.instance_ladder_settings["volume_type"]}"
-    volume_size   = "${var.instance_ladder_settings["volume_size"]}"
+    count         = "${var.instance_bastion_settings["count"]}"
+    name          = "${var.env == "prd" ? "bastion%04d" : "${var.env}-bastion%04d"}"
+    ami           = "${var.instance_bastion_settings["ami"]}"
+    instance_type = "${var.instance_bastion_settings["instance_type"]}"
+    key_name      = "${var.instance_bastion_settings["key_name"]}"
+    volume_type   = "${var.instance_bastion_settings["volume_type"]}"
+    volume_size   = "${var.instance_bastion_settings["volume_size"]}"
   }
 
-  vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.ladder.id}"]
+  vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.bastion.id}"]
   subnet_ids             = "${data.aws_subnet_ids.public.ids}"
 }
 
-module "eip_ladder" {
+module "eip_bastion" {
   source = "../../modules/eip"
 
   aws_eip_variables {
-    count  = "${var.instance_ladder_settings["count"]}"
+    count  = "${var.instance_bastion_settings["count"]}"
     vpc    = true
   }
 
-  instances = ["${(split(",", module.instance_ladder.instance_ids))}"]
+  instances = ["${(split(",", module.instance_bastion.instance_ids))}"]
 }
 
 # consul
@@ -199,5 +220,5 @@ module "instance_consul" {
   }
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.consul.id}"]
-  subnet_ids             = "${data.aws_subnet_ids.private.ids}"
+  subnet_ids             = "${data.aws_subnet_ids.private-common.ids}"
 }

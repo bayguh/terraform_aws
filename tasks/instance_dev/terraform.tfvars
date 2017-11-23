@@ -1,5 +1,5 @@
 // 環境
-env="prd"
+env = "dev"
 
 instance_ansible_settings {
   count         = 1
@@ -34,7 +34,7 @@ instance_db_settings {
   mount_path               = "/var/lib/mysql5.7"
 }
 
-instance_ladder_settings {
+instance_bastion_settings {
   count         = 1
   ami           = "ami-2803ac4e"
   instance_type = "t2.micro"

@@ -46,6 +46,11 @@ if [ $# -ne 2 ] && [ $# -ne 3 ]; then
     exit 1
 fi
 
+if [ ! -d ./tasks/${2} ]; then
+    echo "指定したtaskはありません."
+    exit 1
+fi
+
 COMMAND=$1
 TASK=$2
 UPGRADE=$3

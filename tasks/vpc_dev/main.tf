@@ -95,7 +95,7 @@ module "subnet_private_common" {
   aws_subnet_variables {
     name   = "${var.env == "prd" ? "${var.project_name}-subnet-private-common%02d" : "${var.project_name}-${var.env}-subnet-private-common%02d"}"
     vpc_id = "${module.vpc.vpc_id}"
-    type   = "common"
+    type   = "private-common"
   }
 
   cidr_blocks        = "${var.subnet_private_common_cidr_blocks}"

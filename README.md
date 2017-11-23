@@ -11,7 +11,7 @@ terraform version: 0.11.0
 2.terraformでアクセスするためのkeyを取得し、「keys/access.key」「keys/secret.key」に配置します。
 
 (3.) provisionersを設定しているmoduleではssh接続が必要です。<br />
-     対象のmoduleを使用する場合ssh鍵を登録し、「keys/ssh/access_key」に配置します。(ec2-user)<br />
+     対象のmoduleを使用する場合ssh鍵を登録し、「keys/ssh/access-key.pem」に配置します。(ec2-user)<br />
 
      ※ 現在の対象module: [instance_add_disk]
      ※ こちらを利用する際は別途ファイアーウォール設定が必要です。常に許可出来ない場合はterraform実行用サーバを用意し、そこからのFWルールを設定しておきましょう。
@@ -50,17 +50,23 @@ https://dev.classmethod.jp/cloud/aws/account-and-vpc-dividing-pattern/
 │   ├── access.key
 │   ├── secret.key
 │   ├── ssh
-│   │   └── access_key
+│   │   └── access-key.pem
 │   └── ssl
 ├── modules
 │   ├── eip
 │   │   └── eip.tf
+│   ├── eip_nat_gateway
+│   │   └── eip_nat_gateway.tf
+│   ├── endpoint
+│   │   └── endpoint.tf
 │   ├── instance
 │   │   └── instance.tf
 │   ├── instance_add_ebs
 │   │   └── instance_add_ebs.tf
 │   ├── internet_gateway
 │   │   └── internet_gateway.tf
+│   ├── nat_gateway
+│   │   └── nat_gateway.tf
 │   ├── route53_record
 │   │   └── route53_record.tf
 │   ├── route53_zone
@@ -69,6 +75,8 @@ https://dev.classmethod.jp/cloud/aws/account-and-vpc-dividing-pattern/
 │   │   └── route_table.tf
 │   ├── route_table_association
 │   │   └── route_table_association.tf
+│   ├── route_table_nat_gateway
+│   │   └── route_table_nat_gateway.tf
 │   ├── s3_bucket
 │   │   └── s3_bucket.tf
 │   ├── s3_bucket_lifecycle_days
@@ -90,7 +98,7 @@ https://dev.classmethod.jp/cloud/aws/account-and-vpc-dividing-pattern/
 │   └── disk_partition
 │       └── disk_partition.sh
 ├── tasks
-│   ├── instance
+│   ├── instance_dev
 │   │   ├── backend.tf
 │   │   ├── main.tf
 │   │   └── terraform.tfvars
@@ -101,14 +109,20 @@ https://dev.classmethod.jp/cloud/aws/account-and-vpc-dividing-pattern/
 │   ├── s3
 │   │   ├── backend.tf
 │   │   ├── main.tf
-│   │   ├── terraform.tfstate
-│   │   ├── terraform.tfstate.backup
 │   │   └── terraform.tfvars
-│   ├── security_group
+│   ├── security_group_dev
 │   │   ├── backend.tf
 │   │   ├── main.tf
 │   │   └── terraform.tfvars
-│   └── vpc
+│   ├── vpc_dev
+│   │   ├── backend.tf
+│   │   ├── main.tf
+│   │   └── terraform.tfvars
+│   ├── vpc_shd
+│   │   ├── backend.tf
+│   │   ├── main.tf
+│   │   └── terraform.tfvars
+│   └── vpc_stg
 │       ├── backend.tf
 │       ├── main.tf
 │       └── terraform.tfvars

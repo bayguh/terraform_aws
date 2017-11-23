@@ -35,7 +35,7 @@ resource "aws_instance" "instance" {
   key_name                    = "${var.aws_instance_variables["key_name"]}"
   vpc_security_group_ids      = ["${var.vpc_security_group_ids}"]
   subnet_id                   = "${element(var.subnet_ids, count.index%length(var.subnet_ids))}"
-  associate_public_ip_address = "true"
+  associate_public_ip_address = "false"
 
   root_block_device = {
     volume_type = "${var.aws_instance_variables["volume_type"]}"

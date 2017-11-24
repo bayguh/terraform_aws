@@ -37,6 +37,26 @@ terraform version: 0.11.0
 
 https://dev.classmethod.jp/cloud/aws/account-and-vpc-dividing-pattern/
 
+## 実行順序
+1. VPC作成
+```
+./terraform_execute.sh apply vpc[環境]
+```
+
+2. terraformサーバの作成
+```
+sh scripts/aws_setup/terraform_create.sh
+```
+
+3. セキュリティーグループの作成
+```
+./terraform_execute.sh apply security_group[環境]
+```
+
+4. インスタンス作成
+```
+./terraform_execute.sh apply instance[環境]
+```
 
 ## その他
 ・ terraformサーバの作成は「scripts/aws_setup/terraform_setup.sh」で行います。
@@ -94,6 +114,7 @@ https://dev.classmethod.jp/cloud/aws/account-and-vpc-dividing-pattern/
 ├── provider.tf
 ├── scripts
 │   ├── aws_setup
+│   │   └── terraform_create.sh
 │   │   └── terraform_setup.sh
 │   └── disk_partition
 │       └── disk_partition.sh

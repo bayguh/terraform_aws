@@ -8,7 +8,6 @@ variable "aws_instance_variables" {
       ami                      = ""
       instance_type            = ""
       key_name                 = ""
-      subnet_id                = ""
       volume_type              = ""
       volume_size              = ""
       ebs_device_name          = ""

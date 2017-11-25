@@ -13,3 +13,6 @@ access.key
 secret.key
 *.key
 *.pem
+keys/*
+!keys/ssh/.gitkeep
+!keys/ssl/.gitkeep

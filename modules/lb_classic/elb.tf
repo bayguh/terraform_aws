@@ -1,5 +1,5 @@
 variable "aws_elb_variables" {
-    type = "map"
+    type        = "map"
     description = "elb変数"
 
     default = {
@@ -25,12 +25,12 @@ variable "aws_elb_variables" {
 }
 
 variable "security_groups" {
-  type = "list"
+  type    = "list"
   default = []
 }
 
 variable "instances" {
-  type = "list"
+  type    = "list"
   default = []
 }
 

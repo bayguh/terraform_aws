@@ -2,14 +2,14 @@ variable "env" {}
 
 data "aws_vpc" "vpc" {
   filter {
-    name = "tag:Name"
+    name   = "tag:Name"
     values = ["${var.env == "prd" ? "${var.project_name}-vpc" : "${var.project_name}-${var.env}-vpc"}"]
   }
 }
 
 data "aws_security_group" "terraform" {
   filter {
-    name = "tag:Name"
+    name   = "tag:Name"
     values = ["${var.env == "prd" ? "${var.project_name}-security-group-terraform" : "${var.project_name}-${var.env}-security-group-terraform"}"]
   }
 }

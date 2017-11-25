@@ -1,5 +1,5 @@
 variable "aws_instance_variables" {
-    type = "map"
+    type        = "map"
     description = "インスタンス変数"
 
     default = {
@@ -20,12 +20,12 @@ variable "aws_instance_variables" {
 }
 
 variable "vpc_security_group_ids" {
-  type = "list"
+  type    = "list"
   default = []
 }
 
 variable "subnet_ids" {
-  type = "list"
+  type    = "list"
   default = []
 }
 
@@ -61,8 +61,8 @@ resource "aws_instance" "instance" {
   }
 
   connection {
-    type = "ssh"
-    user = "ec2-user"
+    type        = "ssh"
+    user        = "ec2-user"
     private_key = "${file(var.aws_instance_variables["private_key"])}"
   }
 

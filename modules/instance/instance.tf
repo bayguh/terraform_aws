@@ -1,5 +1,5 @@
 variable "aws_instance_variables" {
-    type = "map"
+    type        = "map"
     description = "インスタンス変数"
 
     default = {
@@ -14,12 +14,12 @@ variable "aws_instance_variables" {
 }
 
 variable "vpc_security_group_ids" {
-  type = "list"
+  type    = "list"
   default = []
 }
 
 variable "subnet_ids" {
-  type = "list"
+  type    = "list"
   default = []
 }
 

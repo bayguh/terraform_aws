@@ -1,5 +1,5 @@
 variable "aws_route_table_variables" {
-    type = "map"
+    type        = "map"
     description = "Route Table変数"
 
     default = {

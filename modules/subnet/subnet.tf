@@ -1,5 +1,5 @@
 variable "aws_subnet_variables" {
-    type = "map"
+    type        = "map"
     description = "subnet変数"
 
     default = {
@@ -10,12 +10,12 @@ variable "aws_subnet_variables" {
 }
 
 variable "cidr_blocks" {
-  type = "list"
+  type    = "list"
   default = []
 }
 
 variable "availability_zones" {
-  type = "list"
+  type    = "list"
   default = []
 }
 

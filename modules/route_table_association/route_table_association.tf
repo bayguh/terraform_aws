@@ -1,5 +1,5 @@
 variable "aws_route_table_association_variables" {
-    type = "map"
+    type        = "map"
     description = "Route Table Association変数"
 
     default = {
@@ -9,7 +9,7 @@ variable "aws_route_table_association_variables" {
 }
 
 variable "subnet_ids" {
-  type = "list"
+  type    = "list"
   default = []
 }
 

@@ -1,5 +1,5 @@
 variable "aws_s3_bucket_variables" {
-    type = "map"
+    type        = "map"
     description = "バケット変数"
 
     default = {

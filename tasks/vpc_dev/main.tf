@@ -77,7 +77,7 @@ module "route_table_association_public" {
   source = "../../modules/route_table_association"
 
   aws_route_table_association_variables {
-    count = "${length(var.subnet_public_cidr_blocks)}"
+    count          = "${length(var.subnet_public_cidr_blocks)}"
     route_table_id = "${module.route_table_public.route_table_id}"
   }
 
@@ -158,7 +158,7 @@ module "nat_gateway" {
   source = "../../modules/nat_gateway"
 
   aws_nat_gateway_variables {
-    name   = "${var.env == "prd" ? "${var.project_name}-nat-gateway" : "${var.project_name}-${var.env}-nat-gateway"}"
+    name          = "${var.env == "prd" ? "${var.project_name}-nat-gateway" : "${var.project_name}-${var.env}-nat-gateway"}"
     allocation_id = "${module.eip_nat_gateway.eip_id}"
     subnet_id     = "${element(split(",", module.subnet_public.subnet_ids), 0)}"
   }
@@ -181,7 +181,7 @@ module "route_table_association_private" {
   source = "../../modules/route_table_association"
 
   aws_route_table_association_variables {
-    count = "${length(concat(var.subnet_private_common_cidr_blocks, var.subnet_private_web_cidr_blocks, var.subnet_private_db_cidr_blocks, var.subnet_private_cache_cidr_blocks))}"
+    count          = "${length(concat(var.subnet_private_common_cidr_blocks, var.subnet_private_web_cidr_blocks, var.subnet_private_db_cidr_blocks, var.subnet_private_cache_cidr_blocks))}"
     route_table_id = "${module.route_table_private.route_table_id}"
   }
 

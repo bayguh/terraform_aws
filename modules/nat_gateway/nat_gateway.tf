@@ -1,5 +1,5 @@
 variable "aws_nat_gateway_variables" {
-    type = "map"
+    type        = "map"
     description = "NAT Gateway変数"
 
     default = {

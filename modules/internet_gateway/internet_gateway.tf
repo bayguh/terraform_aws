@@ -1,5 +1,5 @@
 variable "aws_internet_gateway_variables" {
-    type = "map"
+    type        = "map"
     description = "Internet Gateway変数"
 
     default = {

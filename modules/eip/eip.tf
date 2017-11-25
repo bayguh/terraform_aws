@@ -1,15 +1,15 @@
 variable "aws_eip_variables" {
-    type = "map"
+    type        = "map"
     description = "VPC変数"
 
     default = {
-      count    = ""
-      vpc      = ""
+      count = ""
+      vpc   = ""
     }
 }
 
 variable "instances" {
-  type = "list"
+  type    = "list"
   default = []
 }
 

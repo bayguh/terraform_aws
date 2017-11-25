@@ -1,5 +1,5 @@
 variable "aws_route53_zone_variables" {
-    type = "map"
+    type        = "map"
     description = "route53 zone変数"
 
     default = {

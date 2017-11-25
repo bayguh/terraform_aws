@@ -1,5 +1,5 @@
 variable "aws_security_group_variables" {
-    type = "map"
+    type        = "map"
     description = "Security Group変数"
 
     default = {

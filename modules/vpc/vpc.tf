@@ -1,5 +1,5 @@
 variable "aws_vpc_variables" {
-    type = "map"
+    type        = "map"
     description = "VPC変数"
 
     default = {

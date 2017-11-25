@@ -1,5 +1,5 @@
 variable "aws_vpc_endpoint_variables" {
-    type = "map"
+    type        = "map"
     description = "endpoint変数"
 
     default = {
@@ -9,7 +9,7 @@ variable "aws_vpc_endpoint_variables" {
 }
 
 variable "route_table_ids" {
-  type = "list"
+  type    = "list"
   default = []
 }
 

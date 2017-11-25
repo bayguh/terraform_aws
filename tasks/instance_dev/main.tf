@@ -10,7 +10,7 @@ variable "instance_consul_settings" { type = "map" }
 
 data "aws_vpc" "vpc" {
   filter {
-    name = "tag:Name"
+    name   = "tag:Name"
     values = ["${var.env == "prd" ? "${var.project_name}-vpc" : "${var.project_name}-${var.env}-vpc"}"]
   }
 }
@@ -56,42 +56,42 @@ data "aws_subnet_ids" "cache" {
 
 data "aws_security_group" "common" {
   filter {
-    name = "tag:Name"
+    name   = "tag:Name"
     values = ["${var.env == "prd" ? "${var.project_name}-security-group-common" : "${var.project_name}-${var.env}-security-group-common"}"]
   }
 }
 
 data "aws_security_group" "ansible" {
   filter {
-    name = "tag:Name"
+    name   = "tag:Name"
     values = ["${var.env == "prd" ? "${var.project_name}-security-group-ansible" : "${var.project_name}-${var.env}-security-group-ansible"}"]
   }
 }
 
 data "aws_security_group" "web" {
   filter {
-    name = "tag:Name"
+    name   = "tag:Name"
     values = ["${var.env == "prd" ? "${var.project_name}-security-group-web" : "${var.project_name}-${var.env}-security-group-web"}"]
   }
 }
 
 data "aws_security_group" "db" {
   filter {
-    name = "tag:Name"
+    name   = "tag:Name"
     values = ["${var.env == "prd" ? "${var.project_name}-security-group-db" : "${var.project_name}-${var.env}-security-group-db"}"]
   }
 }
 
 data "aws_security_group" "bastion" {
   filter {
-    name = "tag:Name"
+    name   = "tag:Name"
     values = ["${var.env == "prd" ? "${var.project_name}-security-group-bastion" : "${var.project_name}-${var.env}-security-group-bastion"}"]
   }
 }
 
 data "aws_security_group" "consul" {
   filter {
-    name = "tag:Name"
+    name   = "tag:Name"
     values = ["${var.env == "prd" ? "${var.project_name}-security-group-consul" : "${var.project_name}-${var.env}-security-group-consul"}"]
   }
 }

@@ -1,5 +1,5 @@
 variable "aws_route53_record_variables" {
-    type = "map"
+    type         = "map"
     description = "route53 record変数"
 
     default = {
@@ -11,7 +11,7 @@ variable "aws_route53_record_variables" {
 }
 
 variable "records" {
-  type = "list"
+  type    = "list"
   default = []
 }
 

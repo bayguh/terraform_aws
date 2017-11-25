@@ -1,5 +1,5 @@
 variable "aws_eip_variables" {
-    type = "map"
+    type        = "map"
     description = "VPC変数"
 
     default = {

@@ -34,6 +34,7 @@ variable "subnet_ids" {
  * https://www.terraform.io/docs/providers/aws/r/instance.html
  */
 resource "aws_instance" "instance" {
+  count                       = "${var.aws_instance_variables["count"]}"
   ami                         = "${var.aws_instance_variables["ami"]}"
   instance_type               = "${var.aws_instance_variables["instance_type"]}"
   key_name                    = "${var.aws_instance_variables["key_name"]}"

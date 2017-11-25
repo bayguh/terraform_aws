@@ -190,6 +190,24 @@ module "all_allow_consul_udp_8600" {
 
 # -------------------------------------------------
 
+# terraformのセキュリティーグループ-------------------
+
+# bastionからterraformへのmysql
+module "terraform_allow_bastion_ssh" {
+  source = "../../modules/security_group_rule"
+
+  aws_security_group_rule_variables {
+    type                     = "ingress"
+    from_port                = 22
+    to_port                  = 22
+    protocol                 = "tcp"
+    source_security_group_id = "${module.security_group_bastion.security_group_id}"
+    security_group_id        = "${data.aws_security_group.terraform.id}"
+  }
+}
+
+# -------------------------------------------------
+
 # ansibleのセキュリティーグループ-----------------------
 
 # ansible セキュリティーグループ

@@ -9,9 +9,6 @@ variable "aws_lb_variables" {
       idle_timeout               = ""
       subnet_id                  = ""
       allocation_id              = ""
-      access_logs_bucket         = ""
-      access_logs_bucket_prefix  = ""
-      access_logs_enabled        = ""
     }
 }
 
@@ -31,12 +28,6 @@ resource "aws_lb" "network_lb" {
     allocation_id = "${var.aws_lb_variables["allocation_id"]}"
   }
 
-  access_logs {
-    bucket        = "${var.aws_lb_variables["access_logs_bucket"]}"
-    bucket_prefix = "${var.aws_lb_variables["access_logs_bucket_prefix"]}"
-    enabled       = "${var.aws_lb_variables["access_logs_enabled"]}"
-  }
-
   tags {
     Name = "${var.aws_lb_variables["name"]}"
   }
@@ -44,4 +35,8 @@ resource "aws_lb" "network_lb" {
 
 output "lb_id" {
   value = "${aws_lb.network_lb.id}"
+}
+
+output "lb_arn" {
+  value = "${aws_lb.network_lb.arn}"
 }

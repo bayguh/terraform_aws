@@ -1,5 +1,6 @@
 variable "bucket_default_settings" { type = "map" }
 variable "bucket_backup_settings" { type = "map" }
+variable "bucket_lb_log_settings" { type = "map" }
 
 /**
  * モジュール読み込み
@@ -30,5 +31,18 @@ module "bucket_backup" {
     acl    = "${var.bucket_backup_settings["acl"]}"
     days   = "${var.bucket_backup_settings["days"]}"
     env    = "${var.bucket_backup_settings["env"]}"
+  }
+}
+
+# LBログ用バケット
+module "bucket_lb_log" {
+  source = "../../modules/s3_bucket_lifecycle_days"
+
+  aws_s3_bucket_variables {
+    bucket = "${var.project_name}-${var.bucket_lb_log_settings["bucket"]}"
+    region = "${var.bucket_lb_log_settings["region"]}"
+    acl    = "${var.bucket_lb_log_settings["acl"]}"
+    days   = "${var.bucket_lb_log_settings["days"]}"
+    env    = "${var.bucket_lb_log_settings["env"]}"
   }
 }

@@ -18,3 +18,12 @@ bucket_backup_settings {
   days   = 30
   env    = "shd"
 }
+
+// LBログ用バケット
+bucket_lb_log_settings {
+  bucket = "lb-log-bucket"
+  region = "ap-northeast-1"
+  acl    = "private"
+  days   = 30
+  env    = "shd"
+}

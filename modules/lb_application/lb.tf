@@ -31,14 +31,14 @@ resource "aws_lb" "application_lb" {
   name                       = "${var.aws_lb_variables["name"]}"
   internal                   = "${var.aws_lb_variables["internal"]}"
   load_balancer_type         = "application"
-  security_groups            = "${var.security_groups}"
-  subnets                    = "${var.subnets}"
+  security_groups            = ["${var.security_groups}"]
+  subnets                    = ["${var.subnets}"]
   enable_deletion_protection = "${var.aws_lb_variables["enable_deletion_protection"]}"
   idle_timeout               = "${var.aws_lb_variables["idle_timeout"]}"
 
   access_logs {
     bucket        = "${var.aws_lb_variables["access_logs_bucket"]}"
-    bucket_prefix = "${var.aws_lb_variables["access_logs_bucket_prefix"]}"
+    prefix        = "${var.aws_lb_variables["access_logs_bucket_prefix"]}"
     enabled       = "${var.aws_lb_variables["access_logs_enabled"]}"
   }
 
@@ -50,3 +50,8 @@ resource "aws_lb" "application_lb" {
 output "lb_id" {
   value = "${aws_lb.application_lb.id}"
 }
+
+output "lb_arn" {
+  value = "${aws_lb.application_lb.arn}"
+}
+

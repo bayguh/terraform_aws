@@ -10,6 +10,7 @@ variable "aws_instance_variables" {
       key_name      = ""
       volume_type   = ""
       volume_size   = ""
+      type          = ""
     }
 }
 
@@ -43,6 +44,7 @@ resource "aws_instance" "instance" {
 
   tags {
     Name = "${format(var.aws_instance_variables["name"], count.index+1)}"
+    Type = "${var.aws_instance_variables["type"]}"
   }
 
   lifecycle {

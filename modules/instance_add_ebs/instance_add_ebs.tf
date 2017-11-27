@@ -16,6 +16,7 @@ variable "aws_instance_variables" {
       private_key              = ""
       disk_partition_file_path = ""
       mount_path               = ""
+      type                     = ""
     }
 }
 
@@ -55,6 +56,7 @@ resource "aws_instance" "instance" {
 
   tags {
     Name = "${format(var.aws_instance_variables["name"], count.index+1)}"
+    Type = "${var.aws_instance_variables["type"]}"
   }
 
   lifecycle {

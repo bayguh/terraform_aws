@@ -8,6 +8,7 @@ instance_ansible_settings {
   key_name      = "access-key"
   volume_type   = "gp2"
   volume_size   = 20
+  type          = "ansible"
 }
 
 instance_web_settings {
@@ -17,6 +18,7 @@ instance_web_settings {
   key_name      = "access-key"
   volume_type   = "gp2"
   volume_size   = 20
+  type          = "web"
 }
 
 instance_db_settings {
@@ -32,6 +34,7 @@ instance_db_settings {
   private_key              = "../../keys/ssh/access-key.pem"
   disk_partition_file_path = "../../scripts/disk_partition/disk_partition.sh"
   mount_path               = "/var/lib/mysql5.7"
+  type                     = "db"
 }
 
 instance_bastion_settings {
@@ -41,6 +44,7 @@ instance_bastion_settings {
   key_name      = "access-key"
   volume_type   = "gp2"
   volume_size   = 20
+  type          = "bastion"
 }
 
 instance_consul_settings {
@@ -50,4 +54,5 @@ instance_consul_settings {
   key_name      = "access-key"
   volume_type   = "gp2"
   volume_size   = 20
+  type          = "consul"
 }

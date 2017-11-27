@@ -111,12 +111,13 @@ module "instance_ansible" {
 
   aws_instance_variables {
     count         = "${var.instance_ansible_settings["count"]}"
-    name          = "${var.env == "prd" ? "ansible%04d" : "${var.env}-ansible%04d"}"
+    name          = "${var.env == "prd" ? "${var.instance_consul_settings["type"]}%04d" : "${var.env}-${var.instance_consul_settings["type"]}%04d"}"
     ami           = "${var.instance_ansible_settings["ami"]}"
     instance_type = "${var.instance_ansible_settings["instance_type"]}"
     key_name      = "${var.instance_ansible_settings["key_name"]}"
     volume_type   = "${var.instance_ansible_settings["volume_type"]}"
     volume_size   = "${var.instance_ansible_settings["volume_size"]}"
+    type          = "${var.instance_ansible_settings["type"]}"
   }
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.ansible.id}"]
@@ -140,12 +141,13 @@ module "instance_web" {
 
   aws_instance_variables {
     count         = "${var.instance_web_settings["count"]}"
-    name          = "${var.env == "prd" ? "web%04d" : "${var.env}-web%04d"}"
+    name          = "${var.env == "prd" ? "${var.instance_consul_settings["type"]}%04d" : "${var.env}-${var.instance_consul_settings["type"]}%04d"}"
     ami           = "${var.instance_web_settings["ami"]}"
     instance_type = "${var.instance_web_settings["instance_type"]}"
     key_name      = "${var.instance_web_settings["key_name"]}"
     volume_type   = "${var.instance_web_settings["volume_type"]}"
     volume_size   = "${var.instance_web_settings["volume_size"]}"
+    type          = "${var.instance_web_settings["type"]}"
   }
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.web.id}"]
@@ -158,7 +160,7 @@ module "instance_db" {
 
   aws_instance_variables {
     count                    = "${var.instance_db_settings["count"]}"
-    name                     = "${var.env == "prd" ? "db%04d" : "${var.env}-db%04d"}"
+    name                     = "${var.env == "prd" ? "${var.instance_consul_settings["type"]}%04d" : "${var.env}-${var.instance_consul_settings["type"]}%04d"}"
     ami                      = "${var.instance_db_settings["ami"]}"
     instance_type            = "${var.instance_db_settings["instance_type"]}"
     key_name                 = "${var.instance_db_settings["key_name"]}"
@@ -170,6 +172,7 @@ module "instance_db" {
     private_key              = "${var.instance_db_settings["private_key"]}"
     disk_partition_file_path = "${var.instance_db_settings["disk_partition_file_path"]}"
     mount_path               = "${var.instance_db_settings["mount_path"]}"
+    type                     = "${var.instance_db_settings["type"]}"
   }
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.db.id}"]
@@ -182,12 +185,13 @@ module "instance_bastion" {
 
   aws_instance_variables {
     count         = "${var.instance_bastion_settings["count"]}"
-    name          = "${var.env == "prd" ? "bastion%04d" : "${var.env}-bastion%04d"}"
+    name          = "${var.env == "prd" ? "${var.instance_consul_settings["type"]}%04d" : "${var.env}-${var.instance_consul_settings["type"]}%04d"}"
     ami           = "${var.instance_bastion_settings["ami"]}"
     instance_type = "${var.instance_bastion_settings["instance_type"]}"
     key_name      = "${var.instance_bastion_settings["key_name"]}"
     volume_type   = "${var.instance_bastion_settings["volume_type"]}"
     volume_size   = "${var.instance_bastion_settings["volume_size"]}"
+    type          = "${var.instance_bastion_settings["type"]}"
   }
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.bastion.id}"]
@@ -211,12 +215,13 @@ module "instance_consul" {
 
   aws_instance_variables {
     count         = "${var.instance_consul_settings["count"]}"
-    name          = "${var.env == "prd" ? "consul%04d" : "${var.env}-consul%04d"}"
+    name          = "${var.env == "prd" ? "${var.instance_consul_settings["type"]}%04d" : "${var.env}-${var.instance_consul_settings["type"]}%04d"}"
     ami           = "${var.instance_consul_settings["ami"]}"
     instance_type = "${var.instance_consul_settings["instance_type"]}"
     key_name      = "${var.instance_consul_settings["key_name"]}"
     volume_type   = "${var.instance_consul_settings["volume_type"]}"
     volume_size   = "${var.instance_consul_settings["volume_size"]}"
+    type          = "${var.instance_consul_settings["type"]}"
   }
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.consul.id}"]

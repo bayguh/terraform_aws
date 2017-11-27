@@ -190,6 +190,93 @@ module "all_allow_consul_udp_8600" {
 
 # -------------------------------------------------
 
+# http lbのセキュリティーグループ----------------------
+
+module "security_group_lb_http" {
+  source = "../../modules/security_group"
+
+  aws_security_group_variables {
+    name   = "${var.env == "prd" ? "${var.project_name}-security-group-lb-http" : "${var.project_name}-${var.env}-security-group-lb-http"}"
+    vpc_id = "${data.aws_vpc.vpc.id}"
+  }
+}
+
+# internetアクセス
+module "all_allow_lb_http_tcp" {
+  source = "../../modules/security_group_rule_cidr"
+
+  aws_security_group_rule_variables {
+    type              = "egress"
+    from_port         = 0
+    to_port           = 0
+    protocol          = "-1"
+    security_group_id = "${module.security_group_lb_http.security_group_id}"
+  }
+
+  cidr_blocks = ["0.0.0.0/0"]
+}
+
+# httpアクセス
+module "allow_all_http" {
+  source = "../../modules/security_group_rule_cidr"
+
+  aws_security_group_rule_variables {
+    type              = "ingress"
+    from_port         = "80"
+    to_port           = "80"
+    protocol          = "TCP"
+    security_group_id = "${module.security_group_lb_http.security_group_id}"
+  }
+
+  cidr_blocks = ["0.0.0.0/0"]
+}
+
+# -------------------------------------------------
+
+# https lbのセキュリティーグループ---------------------
+
+module "security_group_lb_https" {
+  source = "../../modules/security_group"
+
+  aws_security_group_variables {
+    name   = "${var.env == "prd" ? "${var.project_name}-security-group-lb-https" : "${var.project_name}-${var.env}-security-group-lb-https"}"
+    vpc_id = "${data.aws_vpc.vpc.id}"
+  }
+}
+
+# internetアクセス
+module "all_allow_lb_https_tcp" {
+  source = "../../modules/security_group_rule_cidr"
+
+  aws_security_group_rule_variables {
+    type              = "egress"
+    from_port         = 0
+    to_port           = 0
+    protocol          = "-1"
+    security_group_id = "${module.security_group_lb_https.security_group_id}"
+  }
+
+  cidr_blocks = ["0.0.0.0/0"]
+}
+
+# httpsアクセス
+module "allow_all_https" {
+  source = "../../modules/security_group_rule_cidr"
+
+  aws_security_group_rule_variables {
+    type              = "ingress"
+    from_port         = "443"
+    to_port           = "443"
+    protocol          = "TCP"
+    security_group_id = "${module.security_group_lb_http.security_group_id}"
+  }
+
+  cidr_blocks = ["0.0.0.0/0"]
+}
+
+# -------------------------------------------------
+
+
 # terraformのセキュリティーグループ-------------------
 
 # bastionからterraformへのmysql

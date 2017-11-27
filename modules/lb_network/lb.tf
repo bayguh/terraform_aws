@@ -3,15 +3,15 @@ variable "aws_lb_variables" {
     description = "network lb変数"
 
     default = {
-      name                        = ""
-      internal                    = ""
-      enable_deletion_protection  = ""
-      idle_timeout                = ""
-      subnet_id                   = ""
-      allocation_id               = ""
-      access_logs_bucket          = ""
-      access_logs_bucket_prefix   = ""
-      access_logs_enabled         = ""
+      name                       = ""
+      internal                   = ""
+      enable_deletion_protection = ""
+      idle_timeout               = ""
+      subnet_id                  = ""
+      allocation_id              = ""
+      access_logs_bucket         = ""
+      access_logs_bucket_prefix  = ""
+      access_logs_enabled        = ""
     }
 }
 

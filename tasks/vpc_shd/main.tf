@@ -101,7 +101,7 @@ module "subnet_private" {
 
 # nat gateway用eip
 module "eip_nat_gateway" {
-  source = "../../modules/eip_nat_gateway"
+  source = "../../modules/eip"
 
   aws_eip_variables {
     vpc = true

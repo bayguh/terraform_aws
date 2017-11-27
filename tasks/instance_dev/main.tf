@@ -124,7 +124,7 @@ module "instance_ansible" {
 }
 
 module "eip_ansible" {
-  source = "../../modules/eip"
+  source = "../../modules/eip_instance"
 
   aws_eip_variables {
     count  = "${var.instance_ansible_settings["count"]}"
@@ -195,7 +195,7 @@ module "instance_bastion" {
 }
 
 module "eip_bastion" {
-  source = "../../modules/eip"
+  source = "../../modules/eip_instance"
 
   aws_eip_variables {
     count  = "${var.instance_bastion_settings["count"]}"

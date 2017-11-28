@@ -75,16 +75,36 @@ sh scripts/aws_setup/terraform_create.sh
 ├── modules
 │   ├── eip
 │   │   └── eip.tf
-│   ├── eip_nat_gateway
-│   │   └── eip_nat_gateway.tf
+│   ├── eip_instance
+│   │   └── eip.tf
 │   ├── endpoint
 │   │   └── endpoint.tf
+│   ├── iam_server_certificate
+│   │   └── iam_server_certificate.tf
 │   ├── instance
 │   │   └── instance.tf
 │   ├── instance_add_ebs
 │   │   └── instance_add_ebs.tf
 │   ├── internet_gateway
 │   │   └── internet_gateway.tf
+│   ├── lb_application
+│   │   └── lb.tf
+│   ├── lb_application_target_group
+│   │   └── lb_target_group.tf
+│   ├── lb_classic
+│   │   └── elb.tf
+│   ├── lb_listener
+│   │   └── lb_listener.tf
+│   ├── lb_listener_rule
+│   │   └── lb_listener_rule.tf
+│   ├── lb_listener_ssl
+│   │   └── lb_listener.tf
+│   ├── lb_network
+│   │   └── lb.tf
+│   ├── lb_network_target_group
+│   │   └── lb_target_group.tf
+│   ├── lb_target_group_attachment
+│   │   └── lb_target_group_attachment.tf
 │   ├── nat_gateway
 │   │   └── nat_gateway.tf
 │   ├── route53_record
@@ -101,6 +121,8 @@ sh scripts/aws_setup/terraform_create.sh
 │   │   └── s3_bucket.tf
 │   ├── s3_bucket_lifecycle_days
 │   │   └── s3_bucket_lifecycle_days.tf
+│   ├── s3_bucket_policy
+│   │   └── s3_bucket_policy.tf
 │   ├── security_group
 │   │   └── security_group.tf
 │   ├── security_group_rule
@@ -119,7 +141,15 @@ sh scripts/aws_setup/terraform_create.sh
 │   └── disk_partition
 │       └── disk_partition.sh
 ├── tasks
+│   ├── http_loadbalancer_dev
+│   │   ├── backend.tf
+│   │   ├── main.tf
+│   │   └── terraform.tfvars
 │   ├── instance_dev
+│   │   ├── backend.tf
+│   │   ├── main.tf
+│   │   └── terraform.tfvars
+│   ├── network_loadbalancer_dev
 │   │   ├── backend.tf
 │   │   ├── main.tf
 │   │   └── terraform.tfvars

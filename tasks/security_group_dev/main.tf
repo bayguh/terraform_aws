@@ -268,7 +268,7 @@ module "allow_all_https" {
     from_port         = "443"
     to_port           = "443"
     protocol          = "TCP"
-    security_group_id = "${module.security_group_lb_http.security_group_id}"
+    security_group_id = "${module.security_group_lb_https.security_group_id}"
   }
 
   cidr_blocks = ["0.0.0.0/0"]

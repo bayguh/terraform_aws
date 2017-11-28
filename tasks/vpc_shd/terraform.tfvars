@@ -13,7 +13,7 @@ vpc_settings {
 subnet_availability_zones = ["ap-northeast-1a", "ap-northeast-1c"]
 
 # Subnet public
-subnet_public_cidr_blocks = ["10.3.0.0/20"]
+subnet_public_cidr_blocks = ["10.3.0.0/20", "10.3.16.0/20"]
 
 # Route Table public
 route_table_public_settings {
@@ -21,7 +21,7 @@ route_table_public_settings {
 }
 
 # Subnet private
-subnet_private_cidr_blocks = ["10.3.16.0/20"]
+subnet_private_cidr_blocks = ["10.3.32.0/20"]
 
 # Route Table private
 route_table_private_settings {

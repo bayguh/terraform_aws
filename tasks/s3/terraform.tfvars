@@ -19,7 +19,7 @@ bucket_backup_settings {
   env    = "shd"
 }
 
-// LBログ用バケット
+# LBログ用バケット
 bucket_lb_log_settings {
   bucket = "lb-log-bucket"
   region = "ap-northeast-1"
@@ -27,3 +27,22 @@ bucket_lb_log_settings {
   days   = 30
   env    = "shd"
 }
+
+# LBログ用バケットポリシー
+bucket_policy_lb_log =<<POLICY
+{
+  "Version": "2012-10-17",
+  "Id": "LBLOGBUCKETPOLICY",
+  "Statement": [
+    {
+      "Sid": "LOGWRITE",
+      "Effect": "Allow",
+      "Principal": {
+          "AWS": "arn:aws:iam::582318560864:root"
+      },
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::bayguh-lb-log-bucket/*"
+    }
+  ]
+}
+POLICY

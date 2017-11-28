@@ -23,3 +23,7 @@ resource "aws_s3_bucket" "bucket" {
     env = "${var.aws_s3_bucket_variables["env"]}"
   }
 }
+
+output "bucket_id" {
+    value = "${aws_s3_bucket.bucket.id}"
+}

@@ -78,7 +78,7 @@ module "route_table_association_public" {
     route_table_id = "${module.route_table_public.route_table_id}"
   }
 
-  subnet_ids = ["${module.subnet_public.subnet_ids}"]
+  subnet_ids = ["${split(",", module.subnet_public.subnet_ids)}"]
 }
 
 # ----------------------------------------

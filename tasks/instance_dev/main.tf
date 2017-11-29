@@ -128,6 +128,8 @@ module "instance_ansible" {
     associate_public_ip_address = "${var.instance_ansible_settings["associate_public_ip_address"]}"
     volume_type                 = "${var.instance_ansible_settings["volume_type"]}"
     volume_size                 = "${var.instance_ansible_settings["volume_size"]}"
+    private_key                 = "${var.instance_ansible_settings["private_key"]}"
+    update_hostname_file_path   = "${var.instance_ansible_settings["update_hostname_file_path"]}"
     type                        = "${var.instance_ansible_settings["type"]}"
   }
 
@@ -159,6 +161,8 @@ module "instance_web" {
     associate_public_ip_address = "${var.instance_web_settings["associate_public_ip_address"]}"
     volume_type                 = "${var.instance_web_settings["volume_type"]}"
     volume_size                 = "${var.instance_web_settings["volume_size"]}"
+    private_key                 = "${var.instance_web_settings["private_key"]}"
+    update_hostname_file_path   = "${var.instance_web_settings["update_hostname_file_path"]}"
     type                        = "${var.instance_web_settings["type"]}"
   }
 
@@ -183,6 +187,7 @@ module "instance_db" {
     ebs_volume_type             = "${var.instance_db_settings["ebs_volume_type"]}"
     ebs_volume_size             = "${var.instance_db_settings["ebs_volume_size"]}"
     private_key                 = "${var.instance_db_settings["private_key"]}"
+    update_hostname_file_path   = "${var.instance_db_settings["update_hostname_file_path"]}"
     disk_partition_file_path    = "${var.instance_db_settings["disk_partition_file_path"]}"
     mount_path                  = "${var.instance_db_settings["mount_path"]}"
     type                        = "${var.instance_db_settings["type"]}"
@@ -205,6 +210,8 @@ module "instance_bastion" {
     associate_public_ip_address = "${var.instance_bastion_settings["associate_public_ip_address"]}"
     volume_type                 = "${var.instance_bastion_settings["volume_type"]}"
     volume_size                 = "${var.instance_bastion_settings["volume_size"]}"
+    private_key                 = "${var.instance_bastion_settings["private_key"]}"
+    update_hostname_file_path   = "${var.instance_bastion_settings["update_hostname_file_path"]}"
     type                        = "${var.instance_bastion_settings["type"]}"
   }
 
@@ -236,6 +243,8 @@ module "instance_consul" {
     associate_public_ip_address = "${var.instance_consul_settings["associate_public_ip_address"]}"
     volume_type                 = "${var.instance_consul_settings["volume_type"]}"
     volume_size                 = "${var.instance_consul_settings["volume_size"]}"
+    private_key                 = "${var.instance_consul_settings["private_key"]}"
+    update_hostname_file_path   = "${var.instance_consul_settings["update_hostname_file_path"]}"
     type                        = "${var.instance_consul_settings["type"]}"
   }
 

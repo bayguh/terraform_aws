@@ -5,4 +5,4 @@ if [ $# -ne 1 ]; then
 fi
 
 sudo sed -i -e "s/localhost.localdomain/${1}/g" /etc/sysconfig/network
-sudo reboot
+sudo hostname ${1}

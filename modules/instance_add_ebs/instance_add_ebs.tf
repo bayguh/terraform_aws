@@ -15,6 +15,7 @@ variable "aws_instance_variables" {
       ebs_volume_type             = ""
       ebs_volume_size             = ""
       private_key                 = ""
+      update_hostname_file_path   = ""
       disk_partition_file_path    = ""
       mount_path                  = ""
       type                        = ""
@@ -68,6 +69,18 @@ resource "aws_instance" "instance" {
     type        = "ssh"
     user        = "ec2-user"
     private_key = "${file(var.aws_instance_variables["private_key"])}"
+  }
+
+  provisioner "file" {
+    source      = "${var.aws_instance_variables["update_hostname_file_path"]}"
+    destination = "/tmp/update_hostname.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sh /tmp/update_hostname.sh ${format(var.aws_instance_variables["name"], count.index+1)}",
+      "rm /tmp/update_hostname.sh"
+    ]
   }
 
   provisioner "file" {

@@ -206,3 +206,40 @@ module "endpoint_s3" {
 }
 
 # --------------------------------------------------
+
+# DHCP ---------------------------------------------
+
+# route53 zone
+module "route53_zone_vpc" {
+  source = "../../modules/route53_zone_vpc"
+
+  aws_route53_zone_variables {
+    name   = "${var.env == "prd" ? "${var.project_name}.internal." : "${var.project_name}-${var.env}.internal."}"
+    vpc_id = "${module.vpc.vpc_id}"
+  }
+}
+
+# dhcp options
+module "dhcp_options" {
+  source = "../../modules/dhcp_options"
+
+  aws_vpc_dhcp_options_variables {
+    name        = "${var.env == "prd" ? "${var.project_name}-dhcp" : "${var.project_name}-${var.env}-dhcp"}"
+    domain_name = "${module.route53_zone_vpc.zone_name} ap-northeast-1.compute.internal"
+  }
+
+  domain_name_servers = ["AmazonProvidedDNS"]
+}
+
+# dhcp options association
+module "dhcp_options_association" {
+  source = "../../modules/dhcp_options_association"
+
+  aws_vpc_dhcp_options_association_variables {
+    vpc_id          = "${module.vpc.vpc_id}"
+    dhcp_options_id = "${module.dhcp_options.dhcp_options_ip}"
+  }
+}
+
+# --------------------------------------------------
+

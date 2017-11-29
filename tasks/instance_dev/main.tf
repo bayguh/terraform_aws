@@ -99,6 +99,15 @@ data "aws_security_group" "consul" {
 
 # ------------------------------------------------------
 
+# route53_zone読み込み -----------------------------------
+
+data "aws_route53_zone" "route53_zone_internal" {
+  name   = "${var.env == "prd" ? "${var.project_name}.internal." : "${var.project_name}-${var.env}.internal."}"
+  vpc_id = "${data.aws_vpc.vpc.id}"
+}
+
+# ------------------------------------------------------
+
 /**
  * モジュール読み込み
  * https://www.terraform.io/docs/configuration/modules.html
@@ -158,7 +167,7 @@ module "instance_web" {
 }
 
 # db
-module "instance_db" {
+/*module "instance_db" {
   source = "../../modules/instance_add_ebs"
 
   aws_instance_variables {
@@ -181,7 +190,7 @@ module "instance_db" {
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.db.id}"]
   subnet_ids             = "${data.aws_subnet_ids.db.ids}"
-}
+}*/
 
 # bastion
 module "instance_bastion" {
@@ -238,16 +247,6 @@ module "instance_consul" {
 
 # host名解決(DNS設定)-------------------------------------
 
-# route53 zone
-module "route53_zone_vpc" {
-  source = "../../modules/route53_zone_vpc"
-
-  aws_route53_zone_variables {
-    name   = "${var.env == "prd" ? "${var.project_name}.internal." : "${var.project_name}-${var.env}.internal."}"
-    vpc_id = "${data.aws_vpc.vpc.id}"
-  }
-}
-
 # ansible internal host名解決用 route53 record
 module "route53_record_instance_ansible" {
   source = "../../modules/route53_record_vpc"
@@ -255,7 +254,7 @@ module "route53_record_instance_ansible" {
   aws_route53_record_variables {
     count   = "${var.instance_ansible_settings["count"]}"
     name    = "${var.env == "prd" ? "${var.instance_ansible_settings["type"]}%04d" : "${var.env}-${var.instance_ansible_settings["type"]}%04d"}"
-    zone_id = "${module.route53_zone_vpc.zone_id}"
+    zone_id = "${data.aws_route53_zone.route53_zone_internal.zone_id}"
     type    = "A"
     ttl     = "${var.ttl}"
   }
@@ -270,7 +269,7 @@ module "route53_record_instance_web" {
   aws_route53_record_variables {
     count   = "${var.instance_web_settings["count"]}"
     name    = "${var.env == "prd" ? "${var.instance_web_settings["type"]}%04d" : "${var.env}-${var.instance_web_settings["type"]}%04d"}"
-    zone_id = "${module.route53_zone_vpc.zone_id}"
+    zone_id = "${data.aws_route53_zone.route53_zone_internal.zone_id}"
     type    = "A"
     ttl     = "${var.ttl}"
   }
@@ -279,19 +278,19 @@ module "route53_record_instance_web" {
 }
 
 # db internal host名解決用 route53 record
-module "route53_record_instance_db" {
+/*module "route53_record_instance_db" {
   source = "../../modules/route53_record_vpc"
 
   aws_route53_record_variables {
     count   = "${var.instance_db_settings["count"]}"
     name    = "${var.env == "prd" ? "${var.instance_db_settings["type"]}%04d" : "${var.env}-${var.instance_db_settings["type"]}%04d"}"
-    zone_id = "${module.route53_zone_vpc.zone_id}"
+    zone_id = "${data.aws_route53_zone.route53_zone_internal.zone_id}"
     type    = "A"
     ttl     = "${var.ttl}"
   }
 
   private_ips = ["${split(",", module.instance_db.instance_privete_ips)}"]
-}
+}*/
 
 # bastion internal host名解決用 route53 record
 module "route53_record_instance_bastion" {
@@ -300,7 +299,7 @@ module "route53_record_instance_bastion" {
   aws_route53_record_variables {
     count   = "${var.instance_bastion_settings["count"]}"
     name    = "${var.env == "prd" ? "${var.instance_bastion_settings["type"]}%04d" : "${var.env}-${var.instance_bastion_settings["type"]}%04d"}"
-    zone_id = "${module.route53_zone_vpc.zone_id}"
+    zone_id = "${data.aws_route53_zone.route53_zone_internal.zone_id}"
     type    = "A"
     ttl     = "${var.ttl}"
   }
@@ -315,7 +314,7 @@ module "route53_record_instance_consul" {
   aws_route53_record_variables {
     count   = "${var.instance_consul_settings["count"]}"
     name    = "${var.env == "prd" ? "${var.instance_consul_settings["type"]}%04d" : "${var.env}-${var.instance_consul_settings["type"]}%04d"}"
-    zone_id = "${module.route53_zone_vpc.zone_id}"
+    zone_id = "${data.aws_route53_zone.route53_zone_internal.zone_id}"
     type    = "A"
     ttl     = "${var.ttl}"
   }
@@ -324,27 +323,3 @@ module "route53_record_instance_consul" {
 }
 
 # ------------------------------------------------------
-
-# VPCとDNS紐付け-----------------------------------------
-
-# dhcp options
-module "dhcp_options" {
-  source = "../../modules/dhcp_options"
-
-  aws_vpc_dhcp_options_variables {
-    name        = "${var.env == "prd" ? "${var.project_name}-dhcp" : "${var.project_name}-${var.env}-dhcp"}"
-    domain_name = "${module.route53_zone_vpc.zone_name} ap-northeast-1.compute.internal"
-  }
-
-  domain_name_servers = ["AmazonProvidedDNS"]
-}
-
-# dhcp options association
-module "dhcp_options_association" {
-  source = "../../modules/dhcp_options_association"
-
-  aws_vpc_dhcp_options_association_variables {
-    vpc_id          = "${data.aws_vpc.vpc.id}"
-    dhcp_options_id = "${module.dhcp_options.dhcp_options_ip}"
-  }
-}

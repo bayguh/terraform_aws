@@ -73,6 +73,10 @@ sh scripts/aws_setup/terraform_create.sh
 │   │   └── access-key.pem
 │   └── ssl
 ├── modules
+│   ├── dhcp_options
+│   │   └── dhcp_options.tf
+│   ├── dhcp_options_association
+│   │   └── dhcp_options_association.tf
 │   ├── eip
 │   │   └── eip.tf
 │   ├── eip_instance
@@ -109,7 +113,11 @@ sh scripts/aws_setup/terraform_create.sh
 │   │   └── nat_gateway.tf
 │   ├── route53_record
 │   │   └── route53_record.tf
+│   ├── route53_record_vpc
+│   │   └── route53_record.tf
 │   ├── route53_zone
+│   │   └── route53_zone.tf
+│   ├── route53_zone_vpc
 │   │   └── route53_zone.tf
 │   ├── route_table
 │   │   └── route_table.tf
@@ -136,12 +144,18 @@ sh scripts/aws_setup/terraform_create.sh
 ├── provider.tf
 ├── scripts
 │   ├── aws_setup
-│   │   └── terraform_create.sh
+│   │   ├── terraform_create.sh
 │   │   └── terraform_setup.sh
-│   └── disk_partition
-│       └── disk_partition.sh
+│   ├── disk_partition
+│   │   └── disk_partition.sh
+│   └── update_hostname
+│       └── update_hostname.sh
 ├── tasks
 │   ├── http_loadbalancer_dev
+│   │   ├── backend.tf
+│   │   ├── main.tf
+│   │   └── terraform.tfvars
+│   ├── https_loadbalancer_dev
 │   │   ├── backend.tf
 │   │   ├── main.tf
 │   │   └── terraform.tfvars

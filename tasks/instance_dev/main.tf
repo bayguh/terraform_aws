@@ -167,7 +167,7 @@ module "instance_web" {
 }
 
 # db
-/*module "instance_db" {
+module "instance_db" {
   source = "../../modules/instance_add_ebs"
 
   aws_instance_variables {
@@ -190,7 +190,7 @@ module "instance_web" {
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.db.id}"]
   subnet_ids             = "${data.aws_subnet_ids.db.ids}"
-}*/
+}
 
 # bastion
 module "instance_bastion" {
@@ -278,7 +278,7 @@ module "route53_record_instance_web" {
 }
 
 # db internal host名解決用 route53 record
-/*module "route53_record_instance_db" {
+module "route53_record_instance_db" {
   source = "../../modules/route53_record_vpc"
 
   aws_route53_record_variables {
@@ -290,7 +290,7 @@ module "route53_record_instance_web" {
   }
 
   private_ips = ["${split(",", module.instance_db.instance_privete_ips)}"]
-}*/
+}
 
 # bastion internal host名解決用 route53 record
 module "route53_record_instance_bastion" {

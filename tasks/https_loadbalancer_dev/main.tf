@@ -1,8 +1,9 @@
 variable "env" {}
 
-variable "http_lb_settings" { type = "map" }
+variable "https_lb_settings" { type = "map" }
 variable "lb_target_group_settings" { type = "map" }
 variable "lb_target_group_attachment_settings" { type = "map" }
+variable "iam_server_certificate_settings" { type = "map" }
 variable "lb_listener_settings" { type = "map" }
 variable "lb_listener_rule_settings" { type = "map" }
 variable "condition_values" { type = "list" }
@@ -28,10 +29,10 @@ data "aws_s3_bucket" "lb_log_bucket" {
   bucket = "${var.project_name}-lb-log-bucket"
 }
 
-data "aws_security_group" "lb_http" {
+data "aws_security_group" "lb_https" {
   filter {
     name   = "tag:Name"
-    values = ["${var.env == "prd" ? "${var.project_name}-security-group-lb-http" : "${var.project_name}-${var.env}-security-group-lb-http"}"]
+    values = ["${var.env == "prd" ? "${var.project_name}-security-group-lb-https" : "${var.project_name}-${var.env}-security-group-lb-https"}"]
   }
 }
 
@@ -45,27 +46,27 @@ data "aws_instances" "web" {
 
 /**
  * モジュール読み込み
- * https://www.terraform.io/docs/configuration/modules.html
+ * httpss://www.terraform.io/docs/configuration/modules.html
  */
 
-# http LB設定--------------------------------------------------------------
+# https LB設定--------------------------------------------------------------
 
 # lb
-# access log設定 (http://docs.aws.amazon.com/ja_jp/elasticloadbalancing/latest/application/load-balancer-access-logs.html#access-log-entry-format)
-module "http_lb" {
+# access log設定 (https://docs.aws.amazon.com/ja_jp/elasticloadbalancing/latest/application/load-balancer-access-logs.html#access-log-entry-format)
+module "https_lb" {
   source = "../../modules/lb_application"
 
   aws_lb_variables {
-    name                       = "${var.env == "prd" ? "${var.project_name}-lb-http" : "${var.project_name}-${var.env}-lb-http"}"
-    internal                   = "${var.http_lb_settings["internal"]}"
-    enable_deletion_protection = "${var.http_lb_settings["enable_deletion_protection"]}"
-    idle_timeout               = "${var.http_lb_settings["idle_timeout"]}"
+    name                       = "${var.env == "prd" ? "${var.project_name}-lb-https" : "${var.project_name}-${var.env}-lb-https"}"
+    internal                   = "${var.https_lb_settings["internal"]}"
+    enable_deletion_protection = "${var.https_lb_settings["enable_deletion_protection"]}"
+    idle_timeout               = "${var.https_lb_settings["idle_timeout"]}"
     access_logs_bucket         = "${data.aws_s3_bucket.lb_log_bucket.id}"
-    access_logs_bucket_prefix  = "${var.env}/http"
-    access_logs_enabled        = "${var.http_lb_settings["access_logs_enabled"]}"
+    access_logs_bucket_prefix  = "${var.env}/https"
+    access_logs_enabled        = "${var.https_lb_settings["access_logs_enabled"]}"
   }
 
-  security_groups = ["${data.aws_security_group.lb_http.id}"]
+  security_groups = ["${data.aws_security_group.lb_https.id}"]
   subnets         = "${data.aws_subnet_ids.public.ids}"
 }
 
@@ -106,15 +107,29 @@ module "lb_target_group_attachment" {
   target_ids = "${data.aws_instances.web.ids}"
 }
 
+# iam server certificate
+module "iam_server_certificate" {
+  source = "../../modules/iam_server_certificate"
+
+  aws_iam_server_certificate_variables {
+    name                   = "${var.iam_server_certificate_settings["name"]}"
+    certificate_body_path  = "${var.iam_server_certificate_settings["certificate_body_path"]}"
+    certificate_chain_path = "${var.iam_server_certificate_settings["certificate_chain_path"]}"
+    private_key_path       = "${var.iam_server_certificate_settings["private_key_path"]}"
+  }
+}
+
 # lb listener
 module "lb_listener" {
-  source = "../../modules/lb_listener"
+  source = "../../modules/lb_listener_ssl"
 
   aws_lb_listener_variables {
-    load_balancer_arn = "${module.http_lb.lb_arn}"
+    load_balancer_arn = "${module.https_lb.lb_arn}"
     port              = "${var.lb_listener_settings["port"]}"
     protocol          = "${var.lb_listener_settings["protocol"]}"
     target_group_arn  = "${module.lb_target_group.lb_target_group_arn}"
+    ssl_policy        = "${var.lb_listener_settings["ssl_policy"]}"
+    certificate_arn   = "${module.iam_server_certificate.iam_server_certificate_arn}"
   }
 }
 

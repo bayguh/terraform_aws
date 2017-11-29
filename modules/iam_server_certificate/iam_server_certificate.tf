@@ -3,10 +3,10 @@ variable "aws_iam_server_certificate_variables" {
     description = "iam server certificate変数"
 
     default = {
-      name              = ""
-      certificate_body  = ""
-      certificate_chain = ""
-      private_key       = ""
+      name                   = ""
+      certificate_body_path  = ""
+      certificate_chain_path = ""
+      private_key_path       = ""
     }
 }
 
@@ -15,7 +15,7 @@ variable "aws_iam_server_certificate_variables" {
  * https://www.terraform.io/docs/providers/aws/r/iam_server_certificate.html
  */
 resource "aws_iam_server_certificate" "iam_server_certificate" {
-  name              = "alt_test_cert"
+  name              = "${var.aws_iam_server_certificate_variables["name"]}"
   certificate_body  = "${file("${var.aws_iam_server_certificate_variables["certificate_body_path"]}")}"
   certificate_chain = "${file("${var.aws_iam_server_certificate_variables["certificate_chain_path"]}")}"
   private_key       = "${file("${var.aws_iam_server_certificate_variables["private_key_path"]}")}"

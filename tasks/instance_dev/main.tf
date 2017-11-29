@@ -1,4 +1,5 @@
 variable "env" {}
+variable "ttl" {}
 
 variable "instance_ansible_settings" { type = "map" }
 variable "instance_web_settings" { type = "map" }
@@ -110,14 +111,15 @@ module "instance_ansible" {
   source = "../../modules/instance"
 
   aws_instance_variables {
-    count         = "${var.instance_ansible_settings["count"]}"
-    name          = "${var.env == "prd" ? "${var.instance_ansible_settings["type"]}%04d" : "${var.env}-${var.instance_ansible_settings["type"]}%04d"}"
-    ami           = "${var.instance_ansible_settings["ami"]}"
-    instance_type = "${var.instance_ansible_settings["instance_type"]}"
-    key_name      = "${var.instance_ansible_settings["key_name"]}"
-    volume_type   = "${var.instance_ansible_settings["volume_type"]}"
-    volume_size   = "${var.instance_ansible_settings["volume_size"]}"
-    type          = "${var.instance_ansible_settings["type"]}"
+    count                       = "${var.instance_ansible_settings["count"]}"
+    name                        = "${var.env == "prd" ? "${var.instance_ansible_settings["type"]}%04d" : "${var.env}-${var.instance_ansible_settings["type"]}%04d"}"
+    ami                         = "${var.instance_ansible_settings["ami"]}"
+    instance_type               = "${var.instance_ansible_settings["instance_type"]}"
+    key_name                    = "${var.instance_ansible_settings["key_name"]}"
+    associate_public_ip_address = "${var.instance_ansible_settings["associate_public_ip_address"]}"
+    volume_type                 = "${var.instance_ansible_settings["volume_type"]}"
+    volume_size                 = "${var.instance_ansible_settings["volume_size"]}"
+    type                        = "${var.instance_ansible_settings["type"]}"
   }
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.ansible.id}"]
@@ -140,14 +142,15 @@ module "instance_web" {
   source = "../../modules/instance"
 
   aws_instance_variables {
-    count         = "${var.instance_web_settings["count"]}"
-    name          = "${var.env == "prd" ? "${var.instance_web_settings["type"]}%04d" : "${var.env}-${var.instance_web_settings["type"]}%04d"}"
-    ami           = "${var.instance_web_settings["ami"]}"
-    instance_type = "${var.instance_web_settings["instance_type"]}"
-    key_name      = "${var.instance_web_settings["key_name"]}"
-    volume_type   = "${var.instance_web_settings["volume_type"]}"
-    volume_size   = "${var.instance_web_settings["volume_size"]}"
-    type          = "${var.instance_web_settings["type"]}"
+    count                       = "${var.instance_web_settings["count"]}"
+    name                        = "${var.env == "prd" ? "${var.instance_web_settings["type"]}%04d" : "${var.env}-${var.instance_web_settings["type"]}%04d"}"
+    ami                         = "${var.instance_web_settings["ami"]}"
+    instance_type               = "${var.instance_web_settings["instance_type"]}"
+    key_name                    = "${var.instance_web_settings["key_name"]}"
+    associate_public_ip_address = "${var.instance_web_settings["associate_public_ip_address"]}"
+    volume_type                 = "${var.instance_web_settings["volume_type"]}"
+    volume_size                 = "${var.instance_web_settings["volume_size"]}"
+    type                        = "${var.instance_web_settings["type"]}"
   }
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.web.id}"]
@@ -159,20 +162,21 @@ module "instance_db" {
   source = "../../modules/instance_add_ebs"
 
   aws_instance_variables {
-    count                    = "${var.instance_db_settings["count"]}"
-    name                     = "${var.env == "prd" ? "${var.instance_db_settings["type"]}%04d" : "${var.env}-${var.instance_db_settings["type"]}%04d"}"
-    ami                      = "${var.instance_db_settings["ami"]}"
-    instance_type            = "${var.instance_db_settings["instance_type"]}"
-    key_name                 = "${var.instance_db_settings["key_name"]}"
-    volume_type              = "${var.instance_db_settings["volume_type"]}"
-    volume_size              = "${var.instance_db_settings["volume_size"]}"
-    ebs_device_name          = "${var.instance_db_settings["ebs_device_name"]}"
-    ebs_volume_type          = "${var.instance_db_settings["ebs_volume_type"]}"
-    ebs_volume_size          = "${var.instance_db_settings["ebs_volume_size"]}"
-    private_key              = "${var.instance_db_settings["private_key"]}"
-    disk_partition_file_path = "${var.instance_db_settings["disk_partition_file_path"]}"
-    mount_path               = "${var.instance_db_settings["mount_path"]}"
-    type                     = "${var.instance_db_settings["type"]}"
+    count                       = "${var.instance_db_settings["count"]}"
+    name                        = "${var.env == "prd" ? "${var.instance_db_settings["type"]}%04d" : "${var.env}-${var.instance_db_settings["type"]}%04d"}"
+    ami                         = "${var.instance_db_settings["ami"]}"
+    instance_type               = "${var.instance_db_settings["instance_type"]}"
+    key_name                    = "${var.instance_db_settings["key_name"]}"
+    associate_public_ip_address = "${var.instance_db_settings["associate_public_ip_address"]}"
+    volume_type                 = "${var.instance_db_settings["volume_type"]}"
+    volume_size                 = "${var.instance_db_settings["volume_size"]}"
+    ebs_device_name             = "${var.instance_db_settings["ebs_device_name"]}"
+    ebs_volume_type             = "${var.instance_db_settings["ebs_volume_type"]}"
+    ebs_volume_size             = "${var.instance_db_settings["ebs_volume_size"]}"
+    private_key                 = "${var.instance_db_settings["private_key"]}"
+    disk_partition_file_path    = "${var.instance_db_settings["disk_partition_file_path"]}"
+    mount_path                  = "${var.instance_db_settings["mount_path"]}"
+    type                        = "${var.instance_db_settings["type"]}"
   }
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.db.id}"]
@@ -184,14 +188,15 @@ module "instance_bastion" {
   source = "../../modules/instance"
 
   aws_instance_variables {
-    count         = "${var.instance_bastion_settings["count"]}"
-    name          = "${var.env == "prd" ? "${var.instance_bastion_settings["type"]}%04d" : "${var.env}-${var.instance_bastion_settings["type"]}%04d"}"
-    ami           = "${var.instance_bastion_settings["ami"]}"
-    instance_type = "${var.instance_bastion_settings["instance_type"]}"
-    key_name      = "${var.instance_bastion_settings["key_name"]}"
-    volume_type   = "${var.instance_bastion_settings["volume_type"]}"
-    volume_size   = "${var.instance_bastion_settings["volume_size"]}"
-    type          = "${var.instance_bastion_settings["type"]}"
+    count                       = "${var.instance_bastion_settings["count"]}"
+    name                        = "${var.env == "prd" ? "${var.instance_bastion_settings["type"]}%04d" : "${var.env}-${var.instance_bastion_settings["type"]}%04d"}"
+    ami                         = "${var.instance_bastion_settings["ami"]}"
+    instance_type               = "${var.instance_bastion_settings["instance_type"]}"
+    key_name                    = "${var.instance_bastion_settings["key_name"]}"
+    associate_public_ip_address = "${var.instance_bastion_settings["associate_public_ip_address"]}"
+    volume_type                 = "${var.instance_bastion_settings["volume_type"]}"
+    volume_size                 = "${var.instance_bastion_settings["volume_size"]}"
+    type                        = "${var.instance_bastion_settings["type"]}"
   }
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.bastion.id}"]
@@ -214,16 +219,106 @@ module "instance_consul" {
   source = "../../modules/instance"
 
   aws_instance_variables {
-    count         = "${var.instance_consul_settings["count"]}"
-    name          = "${var.env == "prd" ? "${var.instance_consul_settings["type"]}%04d" : "${var.env}-${var.instance_consul_settings["type"]}%04d"}"
-    ami           = "${var.instance_consul_settings["ami"]}"
-    instance_type = "${var.instance_consul_settings["instance_type"]}"
-    key_name      = "${var.instance_consul_settings["key_name"]}"
-    volume_type   = "${var.instance_consul_settings["volume_type"]}"
-    volume_size   = "${var.instance_consul_settings["volume_size"]}"
-    type          = "${var.instance_consul_settings["type"]}"
+    count                       = "${var.instance_consul_settings["count"]}"
+    name                        = "${var.env == "prd" ? "${var.instance_consul_settings["type"]}%04d" : "${var.env}-${var.instance_consul_settings["type"]}%04d"}"
+    ami                         = "${var.instance_consul_settings["ami"]}"
+    instance_type               = "${var.instance_consul_settings["instance_type"]}"
+    key_name                    = "${var.instance_consul_settings["key_name"]}"
+    associate_public_ip_address = "${var.instance_consul_settings["associate_public_ip_address"]}"
+    volume_type                 = "${var.instance_consul_settings["volume_type"]}"
+    volume_size                 = "${var.instance_consul_settings["volume_size"]}"
+    type                        = "${var.instance_consul_settings["type"]}"
   }
 
   vpc_security_group_ids = ["${data.aws_security_group.common.id}", "${data.aws_security_group.consul.id}"]
   subnet_ids             = "${data.aws_subnet_ids.private-common.ids}"
+}
+
+# ------------------------------------------------------
+
+# host名解決---------------------------------------------
+
+# route53 zone
+module "route53_zone_vpc" {
+  source = "../../modules/route53_zone_vpc"
+
+  aws_route53_zone_variables {
+    name   = "${var.env == "prd" ? "${var.project_name}.internal." : "${var.project_name}-${var.env}.internal."}"
+    vpc_id = "${data.aws_vpc.vpc.id}"
+  }
+}
+
+# ansible internal host名解決用 route53 record
+module "route53_record_instance_ansible" {
+  source = "../../modules/route53_record_vpc"
+
+  aws_route53_record_variables {
+    count   = "${var.instance_ansible_settings["count"]}"
+    name    = "${var.env == "prd" ? "${var.instance_ansible_settings["type"]}%04d" : "${var.env}-${var.instance_ansible_settings["type"]}%04d"}"
+    zone_id = "${module.route53_zone_vpc_dev.zone_id}"
+    type    = "A"
+    ttl     = "${var.ttl}"
+  }
+
+  private_ips = ["${split(",", module.instance_ansible.instance_privete_ips)}"]
+}
+
+# web internal host名解決用 route53 record
+module "route53_record_instance_web" {
+  source = "../../modules/route53_record_vpc"
+
+  aws_route53_record_variables {
+    count   = "${var.instance_web_settings["count"]}"
+    name    = "${var.env == "prd" ? "${var.instance_web_settings["type"]}%04d" : "${var.env}-${var.instance_web_settings["type"]}%04d"}"
+    zone_id = "${module.route53_zone_vpc_dev.zone_id}"
+    type    = "A"
+    ttl     = "${var.ttl}"
+  }
+
+  private_ips = ["${split(",", module.instance_web.instance_privete_ips)}"]
+}
+
+# db internal host名解決用 route53 record
+module "route53_record_instance_db" {
+  source = "../../modules/route53_record_vpc"
+
+  aws_route53_record_variables {
+    count   = "${var.instance_db_settings["count"]}"
+    name    = "${var.env == "prd" ? "${var.instance_db_settings["type"]}%04d" : "${var.env}-${var.instance_db_settings["type"]}%04d"}"
+    zone_id = "${module.route53_zone_vpc_dev.zone_id}"
+    type    = "A"
+    ttl     = "${var.ttl}"
+  }
+
+  private_ips = ["${split(",", module.instance_db.instance_privete_ips)}"]
+}
+
+# bastion internal host名解決用 route53 record
+module "route53_record_instance_bastion" {
+  source = "../../modules/route53_record_vpc"
+
+  aws_route53_record_variables {
+    count   = "${var.instance_bastion_settings["count"]}"
+    name    = "${var.env == "prd" ? "${var.instance_bastion_settings["type"]}%04d" : "${var.env}-${var.instance_bastion_settings["type"]}%04d"}"
+    zone_id = "${module.route53_zone_vpc_dev.zone_id}"
+    type    = "A"
+    ttl     = "${var.ttl}"
+  }
+
+  private_ips = ["${split(",", module.instance_bastion.instance_privete_ips)}"]
+}
+
+# consul internal host名解決用 route53 record
+module "route53_record_instance_consul" {
+  source = "../../modules/route53_record_vpc"
+
+  aws_route53_record_variables {
+    count   = "${var.instance_consul_settings["count"]}"
+    name    = "${var.env == "prd" ? "${var.instance_consul_settings["type"]}%04d" : "${var.env}-${var.instance_consul_settings["type"]}%04d"}"
+    zone_id = "${module.route53_zone_vpc_dev.zone_id}"
+    type    = "A"
+    ttl     = "${var.ttl}"
+  }
+
+  private_ips = ["${split(",", module.instance_consul.instance_privete_ips)}"]
 }

@@ -3,6 +3,7 @@ variable "aws_route53_record_variables" {
     description = "route53 record変数"
 
     default = {
+      count   = ""
       name    = ""
       zone_id = ""
       type    = ""
@@ -10,7 +11,7 @@ variable "aws_route53_record_variables" {
     }
 }
 
-variable "records" {
+variable "private_ips" {
   type    = "list"
   default = []
 }
@@ -20,9 +21,11 @@ variable "records" {
  * https://www.terraform.io/docs/providers/aws/r/route53_record.html
  */
 resource "aws_route53_record" "route53_record" {
-  name    = "${var.aws_route53_record_variables["name"]}"
+  count   = "${var.aws_route53_record_variables["count"]}"
+  name    = "${format(var.aws_route53_record_variables["name"], count.index+1)}"
   zone_id = "${var.aws_route53_record_variables["zone_id"]}"
   type    = "${var.aws_route53_record_variables["type"]}"
   ttl     = "${var.aws_route53_record_variables["ttl"]}"
-  records = "${var.records}"
+
+  records = ["${element(var.private_ips, count.index)}"]
 }

@@ -3,20 +3,21 @@ variable "aws_instance_variables" {
     description = "インスタンス変数"
 
     default = {
-      count                    = 0
-      name                     = ""
-      ami                      = ""
-      instance_type            = ""
-      key_name                 = ""
-      volume_type              = ""
-      volume_size              = ""
-      ebs_device_name          = ""
-      ebs_volume_type          = ""
-      ebs_volume_size          = ""
-      private_key              = ""
-      disk_partition_file_path = ""
-      mount_path               = ""
-      type                     = ""
+      count                       = 0
+      name                        = ""
+      ami                         = ""
+      instance_type               = ""
+      key_name                    = ""
+      associate_public_ip_address = ""
+      volume_type                 = ""
+      volume_size                 = ""
+      ebs_device_name             = ""
+      ebs_volume_type             = ""
+      ebs_volume_size             = ""
+      private_key                 = ""
+      disk_partition_file_path    = ""
+      mount_path                  = ""
+      type                        = ""
     }
 }
 
@@ -41,7 +42,7 @@ resource "aws_instance" "instance" {
   key_name                    = "${var.aws_instance_variables["key_name"]}"
   vpc_security_group_ids      = ["${var.vpc_security_group_ids}"]
   subnet_id                   = "${element(var.subnet_ids, count.index%length(var.subnet_ids))}"
-  associate_public_ip_address = "false"
+  associate_public_ip_address = "${var.aws_instance_variables["associate_public_ip_address"]}"
 
   root_block_device = {
     volume_type = "${var.aws_instance_variables["volume_type"]}"
@@ -84,4 +85,8 @@ resource "aws_instance" "instance" {
 
 output "instance_ids" {
     value = "${join(",", aws_instance.instance.*.id)}"
+}
+
+output "instance_privete_ips" {
+    value = "${join(",", aws_instance.instance.*.private_ip)}"
 }

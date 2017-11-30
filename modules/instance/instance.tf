@@ -57,6 +57,7 @@ resource "aws_instance" "instance" {
   connection {
     type        = "ssh"
     user        = "ec2-user"
+    host        = "${self.private_ip}"
     private_key = "${file(var.aws_instance_variables["private_key"])}"
   }
 

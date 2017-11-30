@@ -48,7 +48,7 @@ https://dev.classmethod.jp/cloud/aws/account-and-vpc-dividing-pattern/
 sh scripts/aws_setup/terraform_create.sh
 ```
 
-(2.5)ここ以下からterraformサーバ上で実行
+(2.5)ここ以下からterraformサーバ上で実行(注意事項: http://roronya.hatenablog.com/entry/2017/08/19/082629)
 ```
 sh scripts/aws_setup/terraform_setup.sh user
 sh scripts/aws_setup/terraform_setup.sh setup

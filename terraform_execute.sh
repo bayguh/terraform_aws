@@ -22,6 +22,12 @@ _execute() {
     ln -s ../../provider.tf ./
     ln -s ../../common.tf ./
 
+    ACCESS_KEY=`cat ../../keys/access.key`
+    SECRET_KEY=`cat ../../keys/secret.key`
+
+    export AWS_ACCESS_KEY_ID="${ACCESS_KEY}"
+    export AWS_SECRET_ACCESS_KEY="${SECRET_KEY}"
+
     # stateファイル初期化
     if [[ $UPGRADE == "upgrade" ]]; then
         terraform init -upgrade

@@ -1,6 +1,7 @@
 #!/bin/sh
 
 TERRAFORM_VERSION="0.11.0"
+INSTANCE_NAME="bayguh-dev-terraform"
 
 _usage() {
     echo "terraform_setup.sh <command>"
@@ -19,6 +20,9 @@ _setup() {
     sudo yum install git -y
     sudo su - terraform_user -c "git clone https://github.com/kamatama41/tfenv.git ~/.tfenv"
     sudo su - terraform_user -c "echo 'export PATH=\$HOME/.tfenv/bin:\$PATH' >> ~/.bash_profile"
+
+    sudo sed -i -e "s/localhost.localdomain/${INSTANCE_NAME}/g" /etc/sysconfig/network
+    sudo hostname ${INSTANCE_NAME}
 }
 
 _version() {

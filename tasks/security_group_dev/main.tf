@@ -279,7 +279,7 @@ module "allow_all_https" {
 
 # terraformのセキュリティーグループ-------------------
 
-# bastionからterraformへのmysql
+# bastionからterraformへのssh
 module "terraform_allow_bastion_ssh" {
   source = "../../modules/security_group_rule"
 

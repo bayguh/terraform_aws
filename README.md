@@ -48,6 +48,13 @@ https://dev.classmethod.jp/cloud/aws/account-and-vpc-dividing-pattern/
 sh scripts/aws_setup/terraform_create.sh
 ```
 
+(2.5)ここ以下からterraformサーバ上で実行
+```
+sh scripts/aws_setup/terraform_setup.sh user
+sh scripts/aws_setup/terraform_setup.sh setup
+sh scripts/aws_setup/terraform_setup.sh version
+```
+
 3. セキュリティーグループの作成
 ```
 ./terraform_execute.sh apply security_group[環境]

@@ -121,7 +121,7 @@ module "instance_ansible" {
 
   aws_instance_variables {
     count                       = "${var.instance_ansible_settings["count"]}"
-    name                        = "${var.env == "prd" ? "${var.instance_ansible_settings["type"]}%04d" : "${var.env}-${var.instance_ansible_settings["type"]}%04d"}"
+    name                        = "${var.env == "prd" ? "${var.project_name}-${var.instance_ansible_settings["type"]}%04d" : "${var.project_name}-${var.env}-${var.instance_ansible_settings["type"]}%04d"}"
     ami                         = "${var.instance_ansible_settings["ami"]}"
     instance_type               = "${var.instance_ansible_settings["instance_type"]}"
     key_name                    = "${var.instance_ansible_settings["key_name"]}"
@@ -154,7 +154,7 @@ module "instance_web" {
 
   aws_instance_variables {
     count                       = "${var.instance_web_settings["count"]}"
-    name                        = "${var.env == "prd" ? "${var.instance_web_settings["type"]}%04d" : "${var.env}-${var.instance_web_settings["type"]}%04d"}"
+    name                        = "${var.env == "prd" ? "${var.project_name}-${var.instance_web_settings["type"]}%04d" : "${var.project_name}-${var.env}-${var.instance_web_settings["type"]}%04d"}"
     ami                         = "${var.instance_web_settings["ami"]}"
     instance_type               = "${var.instance_web_settings["instance_type"]}"
     key_name                    = "${var.instance_web_settings["key_name"]}"
@@ -176,7 +176,7 @@ module "instance_db" {
 
   aws_instance_variables {
     count                       = "${var.instance_db_settings["count"]}"
-    name                        = "${var.env == "prd" ? "${var.instance_db_settings["type"]}%04d" : "${var.env}-${var.instance_db_settings["type"]}%04d"}"
+    name                        = "${var.env == "prd" ? "${var.project_name}-${var.instance_db_settings["type"]}%04d" : "${var.project_name}-${var.env}-${var.instance_db_settings["type"]}%04d"}"
     ami                         = "${var.instance_db_settings["ami"]}"
     instance_type               = "${var.instance_db_settings["instance_type"]}"
     key_name                    = "${var.instance_db_settings["key_name"]}"
@@ -203,7 +203,7 @@ module "instance_bastion" {
 
   aws_instance_variables {
     count                       = "${var.instance_bastion_settings["count"]}"
-    name                        = "${var.env == "prd" ? "${var.instance_bastion_settings["type"]}%04d" : "${var.env}-${var.instance_bastion_settings["type"]}%04d"}"
+    name                        = "${var.env == "prd" ? "${var.project_name}-${var.instance_bastion_settings["type"]}%04d" : "${var.project_name}-${var.env}-${var.instance_bastion_settings["type"]}%04d"}"
     ami                         = "${var.instance_bastion_settings["ami"]}"
     instance_type               = "${var.instance_bastion_settings["instance_type"]}"
     key_name                    = "${var.instance_bastion_settings["key_name"]}"
@@ -236,7 +236,7 @@ module "instance_consul" {
 
   aws_instance_variables {
     count                       = "${var.instance_consul_settings["count"]}"
-    name                        = "${var.env == "prd" ? "${var.instance_consul_settings["type"]}%04d" : "${var.env}-${var.instance_consul_settings["type"]}%04d"}"
+    name                        = "${var.env == "prd" ? "${var.project_name}-${var.instance_consul_settings["type"]}%04d" : "${var.project_name}-${var.env}-${var.instance_consul_settings["type"]}%04d"}"
     ami                         = "${var.instance_consul_settings["ami"]}"
     instance_type               = "${var.instance_consul_settings["instance_type"]}"
     key_name                    = "${var.instance_consul_settings["key_name"]}"
@@ -262,7 +262,7 @@ module "route53_record_instance_ansible" {
 
   aws_route53_record_variables {
     count   = "${var.instance_ansible_settings["count"]}"
-    name    = "${var.env == "prd" ? "${var.instance_ansible_settings["type"]}%04d" : "${var.env}-${var.instance_ansible_settings["type"]}%04d"}"
+    name    = "${var.env == "prd" ? "${var.project_name}-${var.instance_ansible_settings["type"]}%04d" : "${var.project_name}-${var.env}-${var.instance_ansible_settings["type"]}%04d"}"
     zone_id = "${data.aws_route53_zone.route53_zone_internal.zone_id}"
     type    = "A"
     ttl     = "${var.ttl}"
@@ -277,7 +277,7 @@ module "route53_record_instance_web" {
 
   aws_route53_record_variables {
     count   = "${var.instance_web_settings["count"]}"
-    name    = "${var.env == "prd" ? "${var.instance_web_settings["type"]}%04d" : "${var.env}-${var.instance_web_settings["type"]}%04d"}"
+    name    = "${var.env == "prd" ? "${var.project_name}-${var.instance_web_settings["type"]}%04d" : "${var.project_name}-${var.env}-${var.instance_web_settings["type"]}%04d"}"
     zone_id = "${data.aws_route53_zone.route53_zone_internal.zone_id}"
     type    = "A"
     ttl     = "${var.ttl}"
@@ -292,7 +292,7 @@ module "route53_record_instance_db" {
 
   aws_route53_record_variables {
     count   = "${var.instance_db_settings["count"]}"
-    name    = "${var.env == "prd" ? "${var.instance_db_settings["type"]}%04d" : "${var.env}-${var.instance_db_settings["type"]}%04d"}"
+    name    = "${var.env == "prd" ? "${var.project_name}-${var.instance_db_settings["type"]}%04d" : "${var.project_name}-${var.env}-${var.instance_db_settings["type"]}%04d"}"
     zone_id = "${data.aws_route53_zone.route53_zone_internal.zone_id}"
     type    = "A"
     ttl     = "${var.ttl}"
@@ -307,7 +307,7 @@ module "route53_record_instance_bastion" {
 
   aws_route53_record_variables {
     count   = "${var.instance_bastion_settings["count"]}"
-    name    = "${var.env == "prd" ? "${var.instance_bastion_settings["type"]}%04d" : "${var.env}-${var.instance_bastion_settings["type"]}%04d"}"
+    name    = "${var.env == "prd" ? "${var.project_name}-${var.instance_bastion_settings["type"]}%04d" : "${var.project_name}-${var.env}-${var.instance_bastion_settings["type"]}%04d"}"
     zone_id = "${data.aws_route53_zone.route53_zone_internal.zone_id}"
     type    = "A"
     ttl     = "${var.ttl}"
@@ -322,7 +322,7 @@ module "route53_record_instance_consul" {
 
   aws_route53_record_variables {
     count   = "${var.instance_consul_settings["count"]}"
-    name    = "${var.env == "prd" ? "${var.instance_consul_settings["type"]}%04d" : "${var.env}-${var.instance_consul_settings["type"]}%04d"}"
+    name    = "${var.env == "prd" ? "${var.project_name}-${var.instance_consul_settings["type"]}%04d" : "${var.project_name}-${var.env}-${var.instance_consul_settings["type"]}%04d"}"
     zone_id = "${data.aws_route53_zone.route53_zone_internal.zone_id}"
     type    = "A"
     ttl     = "${var.ttl}"

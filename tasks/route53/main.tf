@@ -39,7 +39,7 @@ module "route53_record_stg_web" {
   source = "../../modules/route53_record"
 
   aws_route53_record_variables {
-    name    = "${var.records_dev_web_setting["env"] == "prd" ? "web.${var.dns_suffix}" : "${var.records_stg_web_setting["env"]}-web.${var.dns_suffix}"}"
+    name    = "${var.records_stg_web_setting["env"] == "prd" ? "web.${var.dns_suffix}" : "${var.records_stg_web_setting["env"]}-web.${var.dns_suffix}"}"
     zone_id = "${module.route53_zone.zone_id}"
     type    = "${var.records_stg_web_setting["type"]}"
     ttl     = "${var.ttl}"
